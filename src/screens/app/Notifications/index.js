@@ -43,10 +43,10 @@ export default class Notifications extends Component {
 
 const styles = StyleSheet.create({
     Box: {
-        flex:1,  
+        flex:1,
         backgroundColor: '#fff',
         borderRadius: 5,
-        padding: 30,
+        padding: 15,
         paddingTop: 5,
         paddingBottom: 5
     },
@@ -57,9 +57,9 @@ const styles = StyleSheet.create({
         paddingRight: 50
     },
     image:{
-        width:80, 
-        height: 80, 
-        borderRadius: 10        
+        width:80,
+        height: 80,
+        borderRadius: 10
     },
     txt:{
         fontFamily: "Pangolin-Regular",

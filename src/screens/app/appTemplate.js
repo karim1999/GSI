@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container, Header, Left, Body, Right, Button, Icon, Title, Content, Toast, Fab} from 'native-base';
+import {Container, Header, Left, Body, Right, Button, Icon, Title,Card, Content, Toast, Fab} from 'native-base';
 import Color from '../../constants/colors';
 import {RefreshControl, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator,Text,Platform} from "react-native";
 
@@ -22,20 +22,22 @@ export default class AppTemplate extends Component {
                     </Body>
 
                     <Right>
-                        
+
                     <TouchableOpacity>
                         <Icon style={styles.butt} name='md-search' />
                     </TouchableOpacity>
-                    
+
                     <TouchableOpacity>
                         <Icon style={styles.butt} name='md-cart' />
                     </TouchableOpacity>
-                
+
                     </Right>
                 </Header>
-                
+
                 <Content style={styles.content}>
+                  <Card>
                     { this.props.children }
+                  </Card>
                 </Content>
             </Container>
         );
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     },
     content:{
         backgroundColor: Color.background,
-        padding: 20,
+        padding:7
     }
 
 });
