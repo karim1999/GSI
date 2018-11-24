@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import CalendarSearch from './src/screens/app/Notifications/index';
+import AddLecture from './src/screens/app/Lectures/AddLecture';
 
 
 export default class App extends Component {
 
   render() {
     return (
-      <CalendarSearch/>
+      <AddLecture/>
     );
   }
 }

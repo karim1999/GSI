@@ -16,6 +16,7 @@ import {
 } from 'native-base';
 import AppTemplate from "../appTemplate";
 import ImagePicker from "react-native-image-picker";
+import TimePicker from 'react-native-simple-time-picker';
 
 export default class AddLecture extends Component {
     constructor(props) {
@@ -35,6 +36,8 @@ export default class AddLecture extends Component {
             date_start: "",
             product: 1,
             Products:[],
+            selectedHours: 0,
+            selectedMinutes: 0,
 
         };
         this.setDate = this.setDate.bind(this);
@@ -77,24 +80,71 @@ export default class AddLecture extends Component {
                     <Form style={styles.container}>
 
                         <Item style={{height: 70}}>
-                            <Icon type="FontAwesome" name='pencil' />
-                            <Label style={styles.font}>Name </Label>
+                            <Icon type="SimpleLineIcons" name='tag' style={{fontSize:17}} />
+                            <Text style={styles.font}>Name </Text>
                             <Input onChangeText={(title) => this.setState({title})}
                                    value={this.state.title}
-                                   placeholder="ex:Web Development..."
+                                   placeholder="ex: Phyiscs..."
                                    placeholderTextColor="#ccc5c5"
                             />
                         </Item>
 
+                        <Item style={styles.lecture}>
+                            <Icon type="FontAwesome" name="calendar" />
+                            
+                            <Text style={styles.lectureTxt}>From</Text>
+                            <DatePicker
+                                defaultDate={new Date(2018, 4, 4)}
+                                minimumDate={new Date(2018, 1, 1)}
+                                maximumDate={new Date(2018, 12, 31)}
+                                locale={"en"}
+                                timeZoneOffsetInMinutes={undefined}
+                                modalTransparent={false}
+                                animationType={"fade"}
+                                androidMode={"default"}
+                                placeHolderText="Select date"
+                                textStyle={{ color: "green" }}
+                                placeHolderTextStyle={{ color: "#d3d3d3" }}
+                                onDateChange={this.setDate}
+                                style={styles.form}
+                                />
+
+                            <Text style={styles.lectureTxt}>To</Text>
+                            <DatePicker
+                                defaultDate={new Date(2018, 4, 4)}
+                                minimumDate={new Date(2018, 1, 1)}
+                                maximumDate={new Date(2018, 12, 31)}
+                                locale={"en"}
+                                timeZoneOffsetInMinutes={undefined}
+                                modalTransparent={false}
+                                animationType={"fade"}
+                                androidMode={"default"}
+                                placeHolderText="Select date"
+                                textStyle={{ color: "green" }}
+                                placeHolderTextStyle={{ color: "#d3d3d3" }}
+                                onDateChange={this.setDate}
+                                style={styles.form}
+                                />
+                        </Item>
+
                         <Item style={{height: 70}}>
                             <Icon name='md-time' />
-                            <Label style={styles.font}>Duration </Label>
-                            <Input onChangeText={(hours) => this.setState({hours})}
-                                   value={this.state.hours}
-                                   keyboardType='numeric'
-                                   placeholder="ex:33h..."
-                                   placeholderTextColor="#ccc5c5"
+                            <Text style={styles.lectureTxt}>From</Text>
+                            <View style={styles.time}>
+                                <TimePicker
+                                selectedHours={this.selectedHours}
+                                selectedMinutes={this.selectedMinutes}
+                                onChange={(hours, minutes) => this.setState({ selectedHours: hours, selectedMinutes: minutes })}
                             />
+                          </View>
+                          <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
+                            <View style={styles.time}>
+                                <TimePicker
+                                selectedHours={this.selectedHours}
+                                selectedMinutes={this.selectedMinutes}
+                                onChange={(hours, minutes) => this.setState({ selectedHours: hours, selectedMinutes: minutes })}
+                            />
+                          </View>
                         </Item>
 
                         <Item style={{height: 70}}>
@@ -125,10 +175,11 @@ export default class AddLecture extends Component {
                         </Item>
 
                         <Item style={{height: 70}}>
-                            <Text style={styles.font}>Course Type: </Text>
+                            <Icon type="Foundation" name='book' />
+                            <Text style={styles.font}>Course Type </Text>
 
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.font}>College </Text>
+                                <Text style={styles.font}> College </Text>
                                 <Radio style={{paddingRight: 20, paddingLeft: 8}}/>
 
                                 <Text style={styles.font}>Genral</Text>
@@ -136,46 +187,9 @@ export default class AddLecture extends Component {
                             </View>
 
                         </Item>
-                
-                        <Item style={{height: 70}}>
-                            <Icon type="FontAwesome" name='hourglass-start' />
-                            <Label style={styles.font}>Start date </Label>
-                            <DatePicker
-                                defaultDate={new Date((this.state.date_start))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText='Select date'
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#cacaca" }}
-                                onDateChange={(val) => this.setState({date_start: val})}
-                            />
-                        </Item>
 
                         <Item style={{height: 70}}>
-                            <Icon type="FontAwesome" name='hourglass-end' />
-                            <Label style={styles.font}>End date </Label>
-                            <DatePicker
-                                defaultDate={new Date((this.state.date_start))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText='Select date'
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#cacaca" }}
-                                onDateChange={(val) => this.setState({date_start: val})}
-                            />
-                        </Item>
-
-                        <Item style={{height: 70}}>
+                            <Icon type="FontAwesome" name="transgender" />
                             <Text style={styles.font}>Sex: </Text>
 
                             <View style={{flexDirection: 'row',  paddingLeft: 20}}>
@@ -192,7 +206,7 @@ export default class AddLecture extends Component {
 
                         <Item style={{height: 70}}>
                             <Icon type="FontAwesome" name='users' />
-                            <Label style={styles.font}>Students </Label>
+                            <Text style={styles.font}>Students </Text>
                             <Input onChangeText={(price) => this.setState({price})}
                                     value={this.state.price}
                                     keyboardType='numeric'
@@ -200,9 +214,27 @@ export default class AddLecture extends Component {
                                     placeholderTextColor="#ccc5c5"
                             />
                         </Item>
+
+                        <Item style={{height: 120}}>
+                            <Icon type="Feather" name='user-plus' />
+                            <Text style={styles.font}>Add Student </Text>
+                            <View style={{flex:1}}>
+                                <Input onChangeText={(price) => this.setState({price})}
+                                        value={this.state.price}
+                                        placeholder="Name..."
+                                        placeholderTextColor="#ccc5c5"
+                                />
+                                <Input onChangeText={(price) => this.setState({price})}
+                                    value={this.state.price}
+                                    keyboardType='numeric'
+                                    placeholder="Phone number..."
+                                    placeholderTextColor="#ccc5c5"
+                            />
+                            </View>
+                        </Item>
                                
                         <Item style={{height: 70, borderColor: "transparent", paddingBottom: 0, marginBottom: 0}} underline={false}>
-                            <Icon type="FontAwesome" name='info' />
+                            <Icon type="MaterialIcons" name='description' />
                             <Text style={styles.font}>Description</Text>
                         </Item>
                         <Item style={{marginBottom: 20}}>
@@ -236,11 +268,8 @@ const styles = StyleSheet.create({
     },
     container:{
         backgroundColor: '#fff',
-        borderRadius: 10,
         flex: 1,
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
-        padding: 20
+        padding: 10
     },
     content:{
         flexDirection: 'row',
@@ -279,6 +308,9 @@ const styles = StyleSheet.create({
     },
     font:{
         fontFamily: "Pangolin-Regular",
-    }
+    },
+    time: {
+        width: 100
+      },
 });
 

@@ -35,9 +35,7 @@ export default class AppTemplate extends Component {
                 </Header>
 
                 <Content style={styles.content}>
-                  <Card>
                     { this.props.children }
-                  </Card>
                 </Content>
             </Container>
         );

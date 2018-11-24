@@ -24,7 +24,14 @@ export default class Payments extends Component {
                                 <H3 style={styles.font}>Students: </H3>
                                 <H3> 150</H3>
                             </Item>
-    
+                            
+                            <Item style={styles.item2}>
+                                <Icon type="Entypo" name="back-in-time" />
+                                <Text style={styles.lectureTxt}>Duration</Text>
+                                <Text style={styles.right}>11:00 To 13:00</Text>
+                                
+                            </Item>
+                            
                             <Button style={styles.button} >
                                 <Text style={styles.buttonTxt}>View Student's Track</Text>
                             </Button>

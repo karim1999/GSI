@@ -43,24 +43,23 @@ export default class Search extends Component {
                     <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="calendar" />
                         <Text style={styles.lectureTxt}>Day</Text>
-                        <DatePicker
-                            defaultDate={new Date(2018, 4, 4)}
-                            minimumDate={new Date(2018, 1, 1)}
-                            maximumDate={new Date(2018, 12, 31)}
-                            locale={"en"}
-                            timeZoneOffsetInMinutes={undefined}
-                            modalTransparent={false}
-                            animationType={"fade"}
-                            androidMode={"default"}
-                            placeHolderText="Select date"
-                            textStyle={{ color: "green" }}
-                            placeHolderTextStyle={{ color: "#d3d3d3" }}
-                            onDateChange={this.setDate}
-                            style={styles.form}
+                        <View style={{marginLeft: 100}}>
+                            <DatePicker
+                                defaultDate={new Date(2018, 4, 4)}
+                                minimumDate={new Date(2018, 1, 1)}
+                                maximumDate={new Date(2018, 12, 31)}
+                                locale={"en"}
+                                timeZoneOffsetInMinutes={undefined}
+                                modalTransparent={false}
+                                animationType={"fade"}
+                                androidMode={"default"}
+                                placeHolderText="Select date"
+                                textStyle={{ color: "green" }}
+                                placeHolderTextStyle={{ color: "#d3d3d3" }}
+                                onDateChange={this.setDate}
+                                style={styles.form}
                             />
-                            <Text>
-                            Date: {this.state.chosenDate.toString().substr(4, 12)}
-                            </Text>
+                        </View>
                     </Item>
 
                     <Item style={styles.lecture}>
@@ -124,7 +123,6 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         padding: 35,
-        borderRadius: 10,
         marginTop: 20,
         justifyContent: 'center',
         alignSelf: 'center',

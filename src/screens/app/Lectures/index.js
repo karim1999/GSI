@@ -35,7 +35,7 @@ export default class Lectures extends Component {
 
                     <Item style={styles.item2}>
                         <Icon type="FontAwesome" name="dollar" />
-                        <Text style={styles.lectureTxt}>Coast</Text>
+                        <Text style={styles.lectureTxt}>Cost</Text>
                         <Button transparent style={styles.price}>
                             <Text style={styles.priceText}>200</Text>
                             <Text style={styles.priceIcon}>$</Text>
@@ -58,6 +58,12 @@ export default class Lectures extends Component {
                         <Icon type="FontAwesome" name="transgender" />
                         <Text style={styles.lectureTxt}>Gender</Text>
                         <Text style={styles.right}>Male</Text>
+                        
+                    </Item>
+                    <Item style={styles.item2}>
+                        <Icon type="Entypo" name="back-in-time" />
+                        <Text style={styles.lectureTxt}>Duration</Text>
+                        <Text style={styles.right}>11:00 To 13:00</Text>
                         
                     </Item>
                     <Item style={styles.item2}>
