@@ -1,9 +1,69 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { Form, Item, Button, Input} from 'native-base';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground, ActivityIndicator, AsyncStorage } from 'react-native';
+import { Form, Item, Button, Input, Toast} from 'native-base';
+import Server from '../../../constants/config';
+import axios from "axios";
+import {setUser} from "../../../reducers";
+import {connect} from "react-redux";
 
+class SignIn extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isSigningIn: false,
+            email: "",
+            password: ""
+        }
+    }
 
-export default class SignIn extends Component {
+    onLoginPressed(){
+        if(this.state.email == '' || this.state.password == ''){
+            Toast.show({
+                text: 'Email and password cannot be empty.',
+                type: "danger",
+                buttonText: 'Okay'
+            })
+        }else{
+            this.setState({
+                isSigningIn: true
+            });
+
+            return axios.post(Server.url + 'api/auth/login', {
+                email: this.state.email,
+                password: this.state.password
+            }).then(response => {
+                this.setUser(response.data.user, response.data.access_token);
+                let item = this.storeItem('token', response.data.access_token);
+                Toast.show({
+                    text: 'Logged in successfully',
+                    type: 'success',
+                    buttonText: 'Okay'
+                });
+                this.props.navigation.navigate('Home');
+                this.setState({
+                    isSigningIn: false
+                })
+            }).catch(error => {
+                Toast.show({
+                    text: 'Wrong email or password.',
+                    type: "danger",
+                    buttonText: 'Okay'
+                });
+                this.setState({
+                    isSigningIn: false
+                });
+            })
+        }
+    }
+
+    async storeItem(key, item) {
+        try{
+            let jsonOfItem = await AsyncStorage.setItem(key, item);
+            return jsonOfItem;
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 
     render() {
         return (
@@ -13,15 +73,20 @@ export default class SignIn extends Component {
                 <View style={styles.list}>
                     <Form>
                         <Item>
-                            <Input placeholder="Username" placeholderTextColor= "#d9cdb7" style={styles.input}/>
+                            <Input placeholder="Email" placeholderTextColor= "#d9cdb7" style={styles.input}
+                                onChangeText={(val) => this.setState({email: val})}/>
                         </Item>
 
                         <Item last>
-                            <Input secureTextEntry={true} placeholder="Password" placeholderTextColor= "#d9cdb7" style={styles.input}/>
+                            <Input secureTextEntry={true} placeholder="Password" placeholderTextColor= "#d9cdb7" style={styles.input}
+                                onChangeText={(val) => this.setState({password: val})}/>
                         </Item>
 
-                        <Button style={styles.button} >
+                        <Button style={styles.button} onPress={this.onLoginPressed()} >
                             <Text style={styles.buttonTxt}>Login</Text>
+                            {this.state.isSigningIn && (
+                            <ActivityIndicator style={{}} size="small" color="#000000" />
+                            )}
                         </Button>
                     </Form>
 
@@ -76,3 +141,15 @@ const styles = StyleSheet.create({
       fontFamily: "Pangolin-Regular",
   }
 });
+
+const mapStateToProps = ({ user }) => ({
+    user
+});
+
+const mapDispatchToProps = {
+    setUser,
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignIn);

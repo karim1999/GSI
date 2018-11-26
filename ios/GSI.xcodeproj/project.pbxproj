@@ -54,6 +54,10 @@
 		FF9F2850BB2C4DAEAC56F75B /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F11F22F8D193434DB754BAB6 /* libRNImagePicker.a */; };
 		24F70117855A4259AE6B2E69 /* VINCHAND.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DACFF66348DC4D4CB2732459 /* VINCHAND.ttf */; };
 		D8CB1E0F92134546B2CE821B /* Pangolin-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D08525038D834F3DA6EB20FC /* Pangolin-Regular.ttf */; };
+		0F74F688901F4FEF97E5B5BB /* Kavoon-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A032914173FE4774AE315A98 /* Kavoon-Regular.ttf */; };
+		E8AB68449E1744E48821F4BA /* OpenSansCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */; };
+		02E8690B0B604B499203C652 /* OpenSansCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */; };
+		582549D1C3814300983E76F3 /* OpenSansCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -377,6 +381,10 @@
 		F11F22F8D193434DB754BAB6 /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		DACFF66348DC4D4CB2732459 /* VINCHAND.ttf */ = {isa = PBXFileReference; name = "VINCHAND.ttf"; path = "../assets/fonts/VINCHAND.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D08525038D834F3DA6EB20FC /* Pangolin-Regular.ttf */ = {isa = PBXFileReference; name = "Pangolin-Regular.ttf"; path = "../assets/fonts/Pangolin-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A032914173FE4774AE315A98 /* Kavoon-Regular.ttf */ = {isa = PBXFileReference; name = "Kavoon-Regular.ttf"; path = "../assets/fonts/Kavoon-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Bold.ttf"; path = "../assets/fonts/OpenSansCondensed-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Light.ttf"; path = "../assets/fonts/OpenSansCondensed-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-LightItalic.ttf"; path = "../assets/fonts/OpenSansCondensed-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -659,6 +667,10 @@
 				A3FAEF0F1C2048FE86E8FEED /* Zocial.ttf */,
 				DACFF66348DC4D4CB2732459 /* VINCHAND.ttf */,
 				D08525038D834F3DA6EB20FC /* Pangolin-Regular.ttf */,
+				A032914173FE4774AE315A98 /* Kavoon-Regular.ttf */,
+				EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */,
+				AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */,
+				0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1126,6 +1138,10 @@
 				A340A61963D54E8188ED0903 /* Zocial.ttf in Resources */,
 				24F70117855A4259AE6B2E69 /* VINCHAND.ttf in Resources */,
 				D8CB1E0F92134546B2CE821B /* Pangolin-Regular.ttf in Resources */,
+				0F74F688901F4FEF97E5B5BB /* Kavoon-Regular.ttf in Resources */,
+				E8AB68449E1744E48821F4BA /* OpenSansCondensed-Bold.ttf in Resources */,
+				02E8690B0B604B499203C652 /* OpenSansCondensed-Light.ttf in Resources */,
+				582549D1C3814300983E76F3 /* OpenSansCondensed-LightItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

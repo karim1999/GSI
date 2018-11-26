@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import AddLecture from './src/screens/app/Lectures/AddLecture';
-
+import RootNavigation from './src/navigation/RootNavigation';
 
 export default class App extends Component {
 
   render() {
     return (
-      <AddLecture/>
+      <RootNavigation/>
     );
   }
 }
+
