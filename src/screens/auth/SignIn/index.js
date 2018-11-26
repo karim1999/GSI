@@ -32,14 +32,14 @@ class SignIn extends Component {
                 email: this.state.email,
                 password: this.state.password
             }).then(response => {
-                this.setUser(response.data.user, response.data.access_token);
+                this.props.setUser(response.data.user, response.data.access_token);
                 let item = this.storeItem('token', response.data.access_token);
                 Toast.show({
                     text: 'Logged in successfully',
                     type: 'success',
                     buttonText: 'Okay'
                 });
-                this.props.navigation.navigate('Home');
+                this.props.navigation.navigate('SignUp');
                 this.setState({
                     isSigningIn: false
                 })
@@ -82,7 +82,7 @@ class SignIn extends Component {
                                 onChangeText={(val) => this.setState({password: val})}/>
                         </Item>
 
-                        <Button style={styles.button} onPress={this.onLoginPressed()} >
+                        <Button style={styles.button} onPress={ () => this.onLoginPressed()} >
                             <Text style={styles.buttonTxt}>Login</Text>
                             {this.state.isSigningIn && (
                             <ActivityIndicator style={{}} size="small" color="#000000" />
@@ -92,6 +92,10 @@ class SignIn extends Component {
 
                     <TouchableOpacity>
                         <Text style={styles.forgetButton}> Forgot Your Password? </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={()=> this.props.navigation.navigate('GettingIn')}>
+                        <Text style={styles.registerButton}> Don't have an account yet? </Text>
                     </TouchableOpacity>
 
                 </View>
@@ -139,7 +143,15 @@ const styles = StyleSheet.create({
       fontSize: 16,
       marginTop: 10,
       fontFamily: "Pangolin-Regular",
-  }
+  },
+  registerButton:{
+    color: '#d9cdb7',
+    fontSize: 16,
+    marginTop: 10,
+    fontFamily: "Pangolin-Regular",
+    justifyContent: 'center', 
+    alignSelf: 'center'
+}
 });
 
 const mapStateToProps = ({ user }) => ({

@@ -4,6 +4,12 @@ import { ListItem, Left, Right, Icon,Button} from 'native-base';
 
 
 export default class GettingIn extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      type : ''
+    }
+  }
 
     render() {
         return (
@@ -11,12 +17,12 @@ export default class GettingIn extends Component {
                   <Image style={styles.logo} source={require('../../../images/LightenedLogo.png')} />
 
                 <View style={styles.list}>
-                    <TouchableOpacity style={styles.student}>
+                    <TouchableOpacity style={styles.student} onPress={()=> this.props.navigation.navigate('SignUp', {type:0} )}>
                         <Image style={styles.imageStyle} source={require('../../../images/student_1144709.png')} />
                         <Text style={styles.studentTxt}>Student</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.Teacher}>
+                    <TouchableOpacity style={styles.Teacher} onPress={()=> this.props.navigation.navigate('SignUp', {type:1} )}>
                         <Image style={styles.imageStyle} source={require('../../../images/img_245706.png')} />
                         <Text style={styles.teacherTxt}>Teacher</Text>
                     </TouchableOpacity>
