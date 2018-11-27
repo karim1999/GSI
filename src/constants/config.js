@@ -1,5 +1,5 @@
 
-const SERVER_URL = 'http://127.0.0.1:8000/';
+const SERVER_URL = 'http://192.168.1.3:80/';
 
 export default {
     url:SERVER_URL,

@@ -17,6 +17,7 @@ class SignIn extends Component {
     }
 
     onLoginPressed(){
+        
         if(this.state.email == '' || this.state.password == ''){
             Toast.show({
                 text: 'Email and password cannot be empty.',
@@ -27,7 +28,7 @@ class SignIn extends Component {
             this.setState({
                 isSigningIn: true
             });
-
+            
             return axios.post(Server.url + 'api/auth/login', {
                 email: this.state.email,
                 password: this.state.password
@@ -39,7 +40,11 @@ class SignIn extends Component {
                     type: 'success',
                     buttonText: 'Okay'
                 });
-                this.props.navigation.navigate('SignUp');
+                if(this.props.user.type == 0){
+                    this.props.navigation.navigate('AppStudent');
+                }else{
+                    this.props.navigation.navigate('AppTeacher');
+                }
                 this.setState({
                     isSigningIn: false
                 })

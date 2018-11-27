@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import {H1, H3, Item, Label, Button} from 'native-base';
+import {H1, H3, Item, Label, Button, Icon} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 

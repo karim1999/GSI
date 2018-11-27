@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import {H1, H3} from 'native-base';
+import {H1, H3, Icon} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 
-export default class Home extends Component {
+export default class MyHomeScreen extends Component {
+    
+    static navigationOptions =  {
+        title: 'Hello!',
+        drawerLabel : 'Home',
+        headerTitle: (
+            <Image 
+                source = {require('../../../images/home.png')}
+                style={{width: 26, height: 26, tintColor: '#f3f3f3'}}
+            />
+        ),
+    }
     render() {
         return (
-            <AppTemplate>
+            <AppTemplate navigation={this.props.navigation}>
                 <View style={styles.Box}>
 
                     <View style={styles.firstBox}></View>

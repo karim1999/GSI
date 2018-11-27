@@ -42,9 +42,7 @@ export default class SignUp2 extends Component {
             });
             this.props.navigation.navigate("SignIn");
         }).catch(error => {
-            alert(JSON.stringify(this.state.register))
-            alert(this.state.civilIDNumber)
-            alert(this.state.gender)
+            alert(JSON.stringify(error))
             let text= "The password must be 6 characters at least.";
             Toast.show({
                 text,

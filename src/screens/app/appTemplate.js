@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Container, Header, Left, Body, Right, Button, Icon, Title,Card, Content, Toast, Fab} from 'native-base';
 import Color from '../../constants/colors';
-import {RefreshControl, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator,Text,Platform} from "react-native";
+import {RefreshControl, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator,Text,Platform, Image} from "react-native";
 
 export default class AppTemplate extends Component {
 
@@ -12,7 +12,7 @@ export default class AppTemplate extends Component {
                         style={{ backgroundColor: Color.mainColor }}
                         androidStatusBarColor={Color.mainColor}>
                     <Left>
-                        <Button transparent>
+                        <Button transparent onPress={ () =>  this.props.navigation.openDrawer() } >
                             <Icon name='menu' />
                         </Button>
                     </Left>

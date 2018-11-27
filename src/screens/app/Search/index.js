@@ -15,7 +15,7 @@ export default class Search extends Component {
       }
     render() {
         return (
-            <AppTemplate>
+            <AppTemplate navigation={this.props.navigation}>
                 <View style={styles.Box}>
                     <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="user" />
