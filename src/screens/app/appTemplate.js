@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import {Container, Header, Left, Body, Right, Button, Icon, Title,Card, Content, Toast, Fab} from 'native-base';
 import Color from '../../constants/colors';
 import {RefreshControl, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator,Text,Platform, Image} from "react-native";
+import {connect} from "react-redux";
+import { setUser } from "../../reducers";
 
-export default class AppTemplate extends Component {
+class AppTemplate extends Component {
 
     render() {
         return (
@@ -37,6 +39,18 @@ export default class AppTemplate extends Component {
                 <Content style={styles.content}>
                     { this.props.children }
                 </Content>
+                {
+                    this.props.fab && (
+                        <Fab
+                            active={true}
+                            style={{ backgroundColor: Color.mainColor }}
+                            position="bottomRight"
+                            onPress={() => this.props.navigation.navigate('AddLecture')}>
+    
+                            <Icon size={25} type="Ionicons" name="ios-add-outline" style={{color:'#FFFFFF'}}  />
+                        </Fab>
+                    )
+                }
             </Container>
         );
     }
@@ -58,3 +72,15 @@ const styles = StyleSheet.create({
     }
 
 });
+
+const mapStateToProps = ({ user }) => ({
+    user
+});
+
+const mapDispatchToProps = {
+    setUser
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AppTemplate);

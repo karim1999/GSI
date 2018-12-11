@@ -1,30 +1,47 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, FlatList } from 'react-native';
 import {H1, H3, Icon} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
+import Server from "../../../constants/config";
+import axios from "axios";
 
 export default class MyHomeScreen extends Component {
-    
-    static navigationOptions =  {
-        title: 'Hello!',
-        drawerLabel : 'Home',
-        headerTitle: (
-            <Image 
-                source = {require('../../../images/home.png')}
-                style={{width: 26, height: 26, tintColor: '#f3f3f3'}}
-            />
-        ),
+
+    constructor(props) {
+        super(props);
+        this.state = { 
+            showLectures: [],
+        };
+      }
+
+    componentDidMount(){
+            return axios.get(Server.url + 'api/lectures')
+            .then(response => {
+                this.setState({
+                    showLectures: response.data,
+                });
+            }).catch(error => {
+                Toast.show({
+                    text: 'Error reaching the server.',
+                    type: "danger",
+                    buttonText: 'Okay'
+                });
+            })
     }
+
     render() {
         return (
             <AppTemplate navigation={this.props.navigation}>
-                <View style={styles.Box}>
+            <FlatList
+                data={this.state.showLectures}
+                renderItem={({item}) => (
+                <TouchableOpacity style={styles.Box} onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
 
                     <View style={styles.firstBox}></View>
 
                     <View style={styles.secondBox}>
-                        <H1 style={styles.font}>SAT</H1>
+                        <H1 style={styles.font}>{item.title}</H1>
                         <H1 style={styles.date}>08</H1>                        
                     </View>
 
@@ -33,7 +50,10 @@ export default class MyHomeScreen extends Component {
                         <H3 style={styles.font}>Phyiscs Lecture</H3>
                     </View>
 
-                </View>
+                </TouchableOpacity>
+                    )}
+                    keyExtractor = { (item, index) => index.toString() }
+                />
 
                 <View style={styles.Box}>
                 

@@ -5,11 +5,13 @@ import { createStore } from 'redux';
 import { currentUser } from './../reducers';
 import { createSwitchNavigator } from 'react-navigation';
 import AuthStack from './authNavigation'
+import AuthLoadingScreen from './loading'
 import AppStackStudent from './appNavigationStudent'
 import AppStackTeacher from './appNavigationTeacher'
 
 const RootStack= createSwitchNavigator(
     {
+        AuthLoading: AuthLoadingScreen,
         AppStudent: AppStackStudent,
         AppTeacher: AppStackTeacher,
         Auth: AuthStack,

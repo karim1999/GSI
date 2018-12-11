@@ -4,7 +4,7 @@ import {Icon, Text} from "native-base";
 import MyHomeScreen from "../screens/app/Home";
 import Lectures from "../screens/app/Lectures";
 import AddLecture from "../screens/app/Lectures/AddLecture";
-import LecturePayment from "../screens/app/Lectures/LecturePayment";
+import LecturePayment from "../screens/app/Teacher/LecturePayment";
 import Notifications from "../screens/app/Notifications";
 import Search from "../screens/app/Search";
 import ResultSearch from "../screens/app/Search/ResultSearch";
@@ -19,8 +19,8 @@ import { createMaterialTopTabNavigator, createStackNavigator, DrawerNavigator } 
 
 const HomeStack = createStackNavigator({
     DrawerStack,
-    Lectures,
     AddLecture,
+    Lectures,
     LecturePayment,
     Search,
     ResultSearch,
@@ -37,14 +37,14 @@ const NotificationsStack = createStackNavigator({
 });
 
 const ReportsStack = createStackNavigator({
-    Students,
+    ResultSearch,
 
 },{
     headerMode: 'none',
 });
 
 const SettingsStack = createStackNavigator({
-    Payments,
+    CalendarSearch,
 },{
     headerMode: 'none',
 });
@@ -72,13 +72,6 @@ const AppStackStudent = createMaterialTopTabNavigator (
                 else if (routeName === 'SettingsStack') {
                     return <Icon name='settings' style={{color: tintColor, fontSize: 25}} type="Feather" />
                 }
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-                // return <Icon name={iconName} style={{color: tintColor, fontSize: 30}} type="Ionicons" />;
             },
         }),
         tabBarPosition: 'bottom',
@@ -106,35 +99,5 @@ const AppStackStudent = createMaterialTopTabNavigator (
         initialRouteName: 'HomeStack',
     }
 );
-// const Main = "Main";
-// const Register = "Register";
-// export {Main, Register}
-// var {height, width} = Dimensions.get('window')
-// let routeConfig = {
-//     Main: {
-//         path: '/',
-//         screen: MyHomeScreen
-//     },
-//     Register: {
-//         path: '/',
-//         screen: Students
-//     }
-// };
-
-// let drawerNavigatorConfig = {
-//     initialRouteName: Main,
-//     drawerWidth: width/2,
-//     drawerPosition: 'left',
-//     drawerOpenRoute: 'DrawerOpen',
-//     drawerCloseRoute: 'DrawerClose',
-//     drawerToggleRoute: 'DrawerToggle',
-//     contentOptions: {
-//         activeTintColor: 'red'
-//     }
-// };
-
-// const App = DrawerNavigator(routeConfig, drawerNavigatorConfig);
-
-
 
 export default AppStackStudent;

@@ -4,7 +4,7 @@ import {Icon, Text} from "native-base";
 import MyHomeScreen from "../screens/app/Home";
 import Lectures from "../screens/app/Lectures";
 import AddLecture from "../screens/app/Lectures/AddLecture";
-import LecturePayment from "../screens/app/Lectures/LecturePayment";
+import LecturePayment from "../screens/app/Teacher/LecturePayment";
 import Notifications from "../screens/app/Notifications";
 import Search from "../screens/app/Search";
 import ResultSearch from "../screens/app/Search/ResultSearch";
@@ -18,9 +18,9 @@ import DrawerStack from "./DrawerNavigator"
 import { createMaterialTopTabNavigator, createStackNavigator, DrawerNavigator } from 'react-navigation'
 
 const HomeStack = createStackNavigator({
-    DrawerStack,
-    Lectures,
+    Teacher,
     AddLecture,
+    Lectures,
     LecturePayment,
     Search,
     ResultSearch,
@@ -30,7 +30,6 @@ const HomeStack = createStackNavigator({
 });
 
 const WalletStack = createStackNavigator({
-    Teacher,
     Wallet,
 },{
     headerMode: 'none',
@@ -43,7 +42,7 @@ const PaymentsStack = createStackNavigator({
 });
 
 const SettingsStack = createStackNavigator({
-    Payments,
+    Search,
 },{
     headerMode: 'none',
 });
@@ -61,20 +60,16 @@ const AppStackTeacher = createMaterialTopTabNavigator (
                 const { routeName } = navigation.state;
                 let iconName;
                 if (routeName === 'HomeStack') {
-                    return <Icon name='home' style={{color: tintColor, fontSize: 30}} type="FontAwesome" />
+                    return <Icon name='home' style={{color: tintColor, fontSize: 26}} type="FontAwesome" />
                 } else if (routeName === 'WalletStack') {
-                    return <Icon name='wallet' style={{color: tintColor, fontSize: 30}} type="Entypo" />
+                    return <Icon name='wallet' style={{color: tintColor, fontSize: 26}} type="Entypo" />
                 }
                 else if (routeName === 'PaymentsStack') {
-                    return <Icon name='cash-multiple' style={{color: tintColor, fontSize: 30}} type="MaterialCommunityIcons" />
+                    return <Icon name='cash-multiple' style={{color: tintColor, fontSize: 26}} type="MaterialCommunityIcons" />
                 }
                 else if (routeName === 'SettingsStack') {
-                    return <Icon name='settings' style={{color: tintColor, fontSize: 30}} type="MaterialIcons" />
+                    return <Icon name='settings' style={{color: tintColor, fontSize: 26}} type="MaterialIcons" />
                 }
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-            return <Image source={{uri:imageName}} />;
             },
         }),
         tabBarPosition: 'bottom',

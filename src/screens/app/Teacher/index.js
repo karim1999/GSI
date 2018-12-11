@@ -1,53 +1,90 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Icon, Item, H3 } from 'native-base';
+import { StyleSheet, Text, View, Image, AsyncStorage, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Icon, Item, H3, Toast } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
+import {setUser} from "../../../reducers";
+import {connect} from "react-redux";
+import axios from "axios";
+import Server from "../../../constants/config";
 
-export default class Teacher extends Component {
+class Teacher extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            showLectures: [],
+            isLoading: false
+        }
+    }
+
+    componentDidMount(){
+        this.setState({
+            isLoading: true
+        })
+        return AsyncStorage.getItem('token').then(userToken => {
+            return axios.get(Server.url + 'api/lectures?token='+userToken)
+            .then(response => {
+                this.setState({
+                    isLoading: false,
+                    showLectures: response.data
+                })
+            }).catch(error => {
+                Toast.show({
+                    text: 'Error reachig server',
+                    buttonText: "Ok",
+                    type: "danger"
+                })
+            })
+        })
+    }
 
     render() {
         return (
-            <AppTemplate>
-                <View style={styles.Box}>
-
-                    <Item style={styles.itemRobot}>
-                        <View style={styles.viewImageRobot}>
-                            <Image source={require('../../../images/cute-smiling-robot.png')} style={styles.imageRobot}/>
-                        </View>
-                        <View>
-                            <H3 style={styles.txt}>Hello, Teacher</H3>
-                            <H3 style={styles.txt}>Welcome back!</H3>
-                        </View>
-                    </Item>
-
-                    <H3 style={styles.title}>Previous Lectures :</H3>
-
-                    <Item style={styles.item}>
-                        <View style={styles.viewImage}>
-                            <Image source={require('../../../images/idea.png')} style={styles.image}/>
-                        </View>
-                        <View>
-                            <Text style={styles.txt}>prof. Tim</Text>
-                            <Text style={styles.txt}>programming</Text>
-                            <Text style={styles.txt}>Date: 20/11/2018</Text>
-                            <Text style={styles.txt}>Due date: 20/11/2018</Text>
-                        </View>
-                    </Item>
-
-                    <Item style={styles.item}>
-                    <View style={styles.viewImage}>
-                        <Image source={require('../../../images/idea.png')} style={styles.image}/>
-                    </View>
+            <AppTemplate fab navigation={this.props.navigation}>
+            {
+                (this.state.isLoading)? (
                     <View>
-                        <Text style={styles.txt}>prof. Tim</Text>
-                        <Text style={styles.txt}>programming</Text>
-                        <Text style={styles.txt}>Date: 20/11/2018</Text>
-                        <Text style={styles.txt}>Due date: 20/11/2018</Text>
+                        <ActivityIndicator style={{paddingTop: 20}} size="large" color={Color.mainColor} />
                     </View>
-                </Item>
-
-                </View>
+                ): (
+                    <FlatList
+                        ListEmptyComponent={
+                            <Text style={{alignItems: "center", justifyContent: "center", flex: 1, textAlign: "center"}}>Your profile is empty start adding lectures</Text>
+                        }
+                        data={this.state.showLectures}
+                        renderItem={({item}) => (
+                        <View style={styles.Box}>
+        
+                            <Item style={styles.itemRobot}>
+                                <View style={styles.viewImageRobot}>
+                                    <Image source={require('../../../images/cute-smiling-robot.png')} style={styles.imageRobot}/>
+                                </View>
+                                <View>
+                                    <H3 style={styles.txt}>Hello, {item.user.name}</H3>
+                                    <H3 style={styles.txt}>Welcome back!</H3>
+                                </View>
+                            </Item>
+        
+                            <H3 style={styles.title}>Previous Lectures :</H3>
+        
+                            <Item style={styles.item} onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
+                                <View style={styles.viewImage}>
+                                    <Image source={require('../../../images/idea.png')} style={styles.image}/>
+                                </View>
+                                <View>
+                                    <Text style={styles.txt}>{item.title}</Text>
+                                    <Text style={styles.txt}>{item.subject}</Text>
+                                    <Text style={styles.txt}>Date: 20/11/2018</Text>
+                                    <Text style={styles.txt}>Due date: 20/11/2018</Text>
+                                </View>
+                            </Item>
+                            
+                        </View>
+                    )}
+                    keyExtractor = { (item, index) => index.toString() }
+                    />                    
+                )
+            }
 
             </AppTemplate>
         );
@@ -100,3 +137,15 @@ const styles = StyleSheet.create({
     },
 
 });
+
+const mapStateToProps = ({ user }) => ({
+    user,
+});
+
+const mapDispatchToProps = {
+    setUser
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Teacher);

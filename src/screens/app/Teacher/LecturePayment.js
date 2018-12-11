@@ -5,6 +5,14 @@ import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 
 export default class LecturePayment extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            jointUsers: this.props.navigation.state.params
+        }
+        abstract = this.state.jointUsers.price - this.state.jointUsers.user_amount;
+    }
+    
     render() {
         return (
             <AppTemplate>
@@ -29,7 +37,7 @@ export default class LecturePayment extends Component {
                         <CardItem style={{}}>
                             <Left>
                             <Thumbnail source={require('../../../images/Background.png')} />
-                            <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>John Hendrseon</Text>
+                            <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{this.state.jointUsers.user_name}</Text>
                             </Left>
                             <Right style={styles.allStarsComment}>
                                 <View style={styles.firstBox}></View>
@@ -40,7 +48,7 @@ export default class LecturePayment extends Component {
                             <H3 style={styles.font}>Paid</H3>
                             </Body>
                             <Right>
-                                <Label style={styles.font}>100$</Label>
+                                <Label style={styles.font}>{this.state.jointUsers.user_amount}$</Label>
                             </Right>
                         </ListItem>
                         <ListItem style={styles.list}>
@@ -48,7 +56,15 @@ export default class LecturePayment extends Component {
                             <H3 style={styles.font}>Need to be paid</H3>
                             </Body>
                             <Right>
-                                <Label style={styles.font}>None</Label>
+                                {
+                                    ((this.state.jointUsers.lecture_price - this.state.jointUsers.user_amount) == 0 ) ? 
+                                    (
+                                        <Label style={styles.font}>None</Label>
+                                    ):
+                                    (
+                                        <Label style={styles.font}>{this.state.jointUsers.lecture_price - this.state.jointUsers.user_amount}</Label>
+                                    )
+                                }
                             </Right>
                         </ListItem>
                     </Card>

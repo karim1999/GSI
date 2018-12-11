@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {NavigationActions} from 'react-navigation';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Icon } from 'native-base'
 import { white } from 'ansi-colors';
 
@@ -13,6 +13,12 @@ export default class drawerContentComponents extends Component {
         });
         this.props.navigation.dispatch(navigateAction);
     })
+    
+    logout(){
+        return AsyncStorage.removeItem('token').then(()=>{
+            this.props.navigation.navigate('Auth');
+        });
+    }
 
   render() {
     return (
@@ -42,6 +48,12 @@ export default class drawerContentComponents extends Component {
                 <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Reports')}>
                     <Image source={require('../images/reports.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Reports</Text>
+                    <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.screenStyle} onPress={() => this.logout()}>
+                    <Image source={require('../images/logout.png')} style={{width: 25, height: 25, marginRight: 20}} />
+                    <Text>Logout</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
                 

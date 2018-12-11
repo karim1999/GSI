@@ -1,24 +1,42 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Icon, Form, Item, Picker, DatePicker, Button, } from 'native-base';
+import { Icon, Form, Item, Picker, DatePicker, Button, Toast } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import Server from "../../../constants/config";
+import axios from "axios";
 
 export default class CalendarSearch extends Component {
-    
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: {},
+      showLectures: {},
+    };
+  }
+    componentDidMount(){
+      return axios.get(Server.url + 'api/lecturesDate')
+      .then(response => {
+          this.setState({
+            showLectures: response.data,
+          });
+      }).catch(error => {
+          Toast.show({
+              text: 'Error reaching the server.',
+              type: "danger",
+              buttonText: 'Okay'
+          });
+      })
+    }
+
     render() {
         return (
-            <Agenda
+          <Agenda
   // the list of items that have to be displayed in agenda. If you want to render item as empty date
   // the value of date key kas to be an empty array []. If there exists no value for date key it is
   // considered that the date in question is not yet loaded
-  items={
-    {'2012-05-22': [{text: 'item 1 - any js object'}],
-     '2012-05-23': [{text: 'item 2 - any js object'}],
-     '2012-05-24': [],
-     '2012-05-25': [{text: 'item 3 - any js object'},{text: 'any js object'}],
-    }}
+  items={this.state.showLectures}
   // callback that gets called when items for a certain month should be loaded (month became visible)
   loadItemsForMonth={(month) => {console.log('trigger items loading')}}
   // callback that fires when the calendar is opened or closed
@@ -28,35 +46,26 @@ export default class CalendarSearch extends Component {
   // callback that gets called when day changes while scrolling agenda list
   onDayChange={(day)=>{console.log('day changed')}}
   // initially selected day
-  selected={'2012-05-16'}
-  // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-  minDate={'2012-05-10'}
-  // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-  maxDate={'2012-05-30'}
+  selected={'2018-11-16'}
   // Max amount of months allowed to scroll to the past. Default = 50
   pastScrollRange={50}
   // Max amount of months allowed to scroll to the future. Default = 50
   futureScrollRange={50}
   // specify how each item should be rendered in agenda
-  renderItem={(item, firstItemInDay) => {return (<View />);}}
+  renderItem={this.renderItem.bind(this)}
   // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-  renderDay={(day, item) => {return (<View />);}}
+  renderDay={(day, item) => {return (<Text style={styles.dateStyle}>{day ?day.day:null}</Text>);}}
   // specify how empty date content with no items should be rendered
-  renderEmptyDate={() => {return (<View />);}}
+  renderEmptyDate={() => {return (<Text>This is empty date!</Text>);}}
   // specify how agenda knob should look like
-  renderKnob={() => {return (<View />);}}
+  renderKnob={() => {return (<Text>aaa</Text>);}}
   // specify what should be rendered instead of ActivityIndicator
-  renderEmptyData = {() => {return (<View />);}}
+  renderEmptyData = {() => {return (<Text style={styles.emptyDate}>This is empty date!</Text>);}}
   // specify your item comparison function for increased performance
   rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
   // Hide knob button. Default = false
-  hideKnob={true}
   // By default, agenda dates are marked if they have at least one item, but you can override this if needed
-  markedDates={{
-    '2012-05-16': {selected: true, marked: true},
-    '2012-05-17': {marked: true},
-    '2012-05-18': {disabled: true}
-  }}
+ 
   // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
   onRefresh={() => console.log('refreshing...')}
   // Set this true while waiting for new data from a refresh
@@ -73,11 +82,47 @@ export default class CalendarSearch extends Component {
   // agenda container style
   style={{}}
 />
+
         );
     }
+
+    renderItem(item) {
+      return (
+        <View style={[styles.item, {height:100}]}>
+          <Text style={styles.itemTxt}>{item.start_duration}</Text>
+          <Text style={styles.itemTxt}>{item.title}</Text>
+          <Text style={styles.itemTxt}>{item.start_date}</Text>      
+        </View>
+      );
+    };
+
+    
 }
 
-const styles = StyleSheet.create({
-    
 
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    fontSize: 20,
+    flex:1,
+    padding: 10,
+    fontFamily: "Pangolin-Regular",
+  },
+  dateStyle:{
+    fontSize: 25,
+    padding: 10,
+    fontFamily: "Pangolin-Regular",   
+  },
+  itemTxt:{
+    fontSize: 17,
+    fontFamily: "Pangolin-Regular",
+    textAlign: 'center'
+  } 
 });

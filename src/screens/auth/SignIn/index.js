@@ -33,14 +33,15 @@ class SignIn extends Component {
                 email: this.state.email,
                 password: this.state.password
             }).then(response => {
-                this.props.setUser(response.data.user, response.data.access_token);
-                let item = this.storeItem('token', response.data.access_token);
+                this.props.setUser(response.data, response.data.access_token);
+                // let item = this.storeItem('token', response.data.access_token);
+                AsyncStorage.setItem('token',''+response.data.access_token)
                 Toast.show({
                     text: 'Logged in successfully',
                     type: 'success',
                     buttonText: 'Okay'
                 });
-                if(this.props.user.type == 0){
+                if(this.props.user.type == 1){
                     this.props.navigation.navigate('AppStudent');
                 }else{
                     this.props.navigation.navigate('AppTeacher');
@@ -61,14 +62,14 @@ class SignIn extends Component {
         }
     }
 
-    async storeItem(key, item) {
-        try{
-            let jsonOfItem = await AsyncStorage.setItem(key, item);
-            return jsonOfItem;
-        }catch(error){
-            console.log(error.message);
-        }
-    }
+    // async storeItem(key, item) {
+    //     try{
+    //         let jsonOfItem = await AsyncStorage.setItem(key, item);
+    //         return jsonOfItem;
+    //     }catch(error){
+    //         console.log(error.message);
+    //     }
+    // }
 
     render() {
         return (

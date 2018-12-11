@@ -5,17 +5,6 @@ import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 
 export default class Students extends Component {
-
-    static navigationOptions =  {
-        drawerLabel : 'Register',
-        drawerIcon : (tintColor) => {
-            <Image 
-                source = {require('../../../images/user-icon.png')}
-                style={{width: 26, height: 26, tintColor: '#f3f3f3'}}
-            />
-        }
-    }
-
     render() {
         return (
             <AppTemplate navigation={this.props.navigation}>
