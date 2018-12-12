@@ -4,6 +4,7 @@ import {Icon, Text} from "native-base";
 import MyHomeScreen from "../screens/app/Home";
 import Lectures from "../screens/app/Lectures";
 import AddLecture from "../screens/app/Lectures/AddLecture";
+import EditLecture from "../screens/app/Lectures/EditLecture";
 import LecturePayment from "../screens/app/Teacher/LecturePayment";
 import Notifications from "../screens/app/Notifications";
 import Search from "../screens/app/Search";
@@ -20,6 +21,7 @@ import { createMaterialTopTabNavigator, createStackNavigator, DrawerNavigator } 
 const HomeStack = createStackNavigator({
     Teacher,
     AddLecture,
+    EditLecture,
     Lectures,
     LecturePayment,
     Search,

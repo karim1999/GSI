@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, FlatList, AsyncStorage } from 'react-native';
-import { Icon, Form, Item, Picker, DatePicker, Button, Label, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Toast} from 'native-base';
+import { StyleSheet, Text, View, Image, FlatList, AsyncStorage, Alert, } from 'react-native';
+import { Icon, Form, Item, Picker, DatePicker, Button, Label, List, ListItem, Left, Body, 
+    Right, Thumbnail, Card, CardItem, Toast} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import axios from "axios";
 import Server from "../../../constants/config";
+import {setUser} from "../../../reducers";
+import {connect} from "react-redux";
 
-export default class Lectures extends Component {
+class Lectures extends Component {
     constructor(props) {
         super(props);
         this.state = { 
             chosenDate: new Date(),
             lecture: this.props.navigation.state.params ,
-            isLoading: false
+            isLoading: false,
+            isSetting: false,
+
         };
         this.setDate = this.setDate.bind(this);
       }
@@ -44,10 +49,84 @@ export default class Lectures extends Component {
             });
         });
     }
+
+    deleteLecture(){
+        Alert.alert(
+            "Are you sure?",
+            "No one will be able to access this lecture after deleting",
+            [
+                {text: "Cancel", onPress: () => console.log('Cancel Pressed')},
+                {text: "Ok", onPress: () => {
+                        this.setState({
+                            isDeleting: true,
+                        });
+                        AsyncStorage.getItem('token').then(userToken => {
+                            return axios.delete(Server.url+'api/deleteLecture/'+this.state.lecture.id+'?token='+userToken).then(response => {
+                                // alert(response.data);
+                                this.props.navigation.navigate("Teacher");
+                                this.props.setUser(response.data.user);
+                                this.setState({
+                                    isLoading: false,
+                                });
+                                Toast.show({
+                                    text: "The lecture was deleted successfully",
+                                    buttonText: "Ok",
+                                    type: "success"
+                                })
+                            }).catch(error => {
+                                this.setState({
+                                    isLoading: false,
+                                });
+                                Toast.show({
+                                    text: "Unknown error has occurred",
+                                    buttonText: "Ok",
+                                    type: "danger"
+                                })
+                            })
+                        });
+                    }},
+            ],
+            { cancelable: false }
+        )
+    }
     
     render() {
         return (
             <AppTemplate>
+                
+                <Button onPress={() => this.setState({isSetting: !this.state.isSetting})} style={{width: "100%", alignItems: "center"}} dark><Text style={{flex: 1, color: '#fff'}}> Settings </Text>
+                <Icon name={this.state.isSetting? "ios-arrow-dropup-circle": "ios-arrow-dropdown-circle"} style={{color: "#FFFFFF", fontSize: 25}}/>
+                </Button>
+
+                {
+                    (this.state.isSetting) && (
+                        
+                            (this.props.user.type == 1) ? (
+                                <List style={{backgroundColor: "#000", right: 0}}>
+                                    <ListItem
+                                        
+                                    >
+                                        <Text style={{flex: 1, color: '#fff'}}>Applying</Text>
+                                    </ListItem> 
+                                </List>
+
+                            ):(
+                                <List style={{backgroundColor: "#000", right: 0}}>
+                                    <ListItem
+                                        onPress={() => this.props.navigation.navigate("EditLecture", {...this.state.lecture})}
+                                    >
+                                        <Text style={{flex: 1, color: '#fff'}}>Edit Course</Text>
+                                    </ListItem>
+                                    
+                                    <ListItem
+                                        onPress={() => this.deleteLecture()}
+                                    >
+                                        <Text style={{flex: 1, color: '#fff'}}>Delete Course</Text>
+                                    </ListItem>
+                                </List>
+                            )  
+                    )
+                }
                     <View style={styles.Box}>
 
                         <Item style={styles.item}>
@@ -233,3 +312,15 @@ const styles = StyleSheet.create({
     }
 
 });
+
+const mapStateToProps = ({ user }) => ({
+    user,
+});
+
+const mapDispatchToProps = {
+    setUser
+};
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Lectures);

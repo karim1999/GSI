@@ -41,31 +41,31 @@ class Teacher extends Component {
     render() {
         return (
             <AppTemplate fab navigation={this.props.navigation}>
+            
+                <Item style={styles.itemRobot}>
+                    <View style={styles.viewImageRobot}>
+                        <Image source={require('../../../images/cute-smiling-robot.png')} style={styles.imageRobot}/>
+                    </View>
+                    <View>
+                        <H3 style={styles.txt}>Hello, {this.props.user.name}</H3>
+                        <H3 style={styles.txt}>Welcome back!</H3>
+                    </View>
+                </Item>
             {
                 (this.state.isLoading)? (
                     <View>
                         <ActivityIndicator style={{paddingTop: 20}} size="large" color={Color.mainColor} />
                     </View>
                 ): (
+                    <View style={styles.Box}>
+                    <H3 style={styles.title}>Previous Lectures :</H3>
                     <FlatList
                         ListEmptyComponent={
                             <Text style={{alignItems: "center", justifyContent: "center", flex: 1, textAlign: "center"}}>Your profile is empty start adding lectures</Text>
                         }
                         data={this.state.showLectures}
                         renderItem={({item}) => (
-                        <View style={styles.Box}>
-        
-                            <Item style={styles.itemRobot}>
-                                <View style={styles.viewImageRobot}>
-                                    <Image source={require('../../../images/cute-smiling-robot.png')} style={styles.imageRobot}/>
-                                </View>
-                                <View>
-                                    <H3 style={styles.txt}>Hello, {item.user.name}</H3>
-                                    <H3 style={styles.txt}>Welcome back!</H3>
-                                </View>
-                            </Item>
-        
-                            <H3 style={styles.title}>Previous Lectures :</H3>
+                        <View>
         
                             <Item style={styles.item} onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
                                 <View style={styles.viewImage}>
@@ -82,7 +82,8 @@ class Teacher extends Component {
                         </View>
                     )}
                     keyExtractor = { (item, index) => index.toString() }
-                    />                    
+                    />
+                    </View>                    
                 )
             }
 

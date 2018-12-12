@@ -10,7 +10,6 @@ export default class LecturePayment extends Component {
         this.state = {
             jointUsers: this.props.navigation.state.params
         }
-        abstract = this.state.jointUsers.price - this.state.jointUsers.user_amount;
     }
     
     render() {
