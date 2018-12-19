@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import {Item, Right, Left, Icon} from 'native-base';
 import Color from '../constants/colors';
-import AppTemplate from "../../src/screens/app/appTemplate";
 
 export default class SameItems extends Component {
     render() {
         return (
-            <AppTemplate>
                 <View style={styles.Box}>
 
                     <Item style={styles.item}>
@@ -37,8 +35,6 @@ export default class SameItems extends Component {
                     </Item>
 
                 </View>
-
-            </AppTemplate>
         );
     }
 }

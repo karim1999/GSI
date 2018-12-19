@@ -1,14 +1,9 @@
-import MyHomeScreen from "../screens/app/Home";
-import Students from "../screens/app/Students";
-import Search from "../screens/app/Search";
 import { DrawerNavigator } from 'react-navigation'
-import Color from '../constants/colors'
 import drawerContentComponents from './drawerContentComponents ';
+import AppStackStudent from './appNavigationStudent';
 
 export default DrawerNavigator({
-    Home:{ screen: MyHomeScreen },
-    Register:{ screen: Students },
-    Reports:{ screen: Search }
+    AppStackStudent: {screen: AppStackStudent}
 
 },{
     contentComponent: drawerContentComponents

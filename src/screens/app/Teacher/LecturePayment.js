@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { Icon, H3, Form, Item, Button, Label, ListItem, Left, Body, Right, Thumbnail, Card, CardItem, Input} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
@@ -8,13 +8,35 @@ export default class LecturePayment extends Component {
     constructor(props){
         super(props);
         this.state = {
-            jointUsers: this.props.navigation.state.params
+            lecture: this.props.navigation.state.params
         }
     }
+
+    // componentDidMount(){
+    //     this.setState({
+    //         isLoading: true
+    //     })
+    //     return AsyncStorage.getItem('token').then(userToken => {
+    //         return axios.get(Server.url + 'api/getusers?token='+userToken)
+    //         .then(response => {
+    //             this.setState({
+    //                 isLoading: false,
+    //                 showLectAndUser: response.data
+    //             })
+    //         }).catch(error => {
+    //             Toast.show({
+    //                 text: 'Error reachig server',
+    //                 buttonText: "Ok",
+    //                 type: "danger"
+    //             })
+    //         })
+    //     })
+    // }
     
     render() {
         return (
-            <AppTemplate>
+            <AppTemplate back navigation={this.props.navigation}>  
+
                 <View style={styles.Box}>
                     <Item style={{height: 70, padding: 15, paddingBottom:0, backgroundColor: '#fff', borderColor: 'transparent' }}>
                         <Icon type="FontAwesome" name='user' />
@@ -31,44 +53,51 @@ export default class LecturePayment extends Component {
 
                 </View>
 
-                <View style={styles.Box1}>  
-                    <Card style={{borderWidth: 0}} transparent={true}>
-                        <CardItem style={{}}>
-                            <Left>
-                            <Thumbnail source={require('../../../images/Background.png')} />
-                            <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{this.state.jointUsers.user_name}</Text>
-                            </Left>
-                            <Right style={styles.allStarsComment}>
-                                <View style={styles.firstBox}></View>
-                            </Right> 
-                        </CardItem>
-                        <ListItem style={styles.list}>
-                            <Body>
-                            <H3 style={styles.font}>Paid</H3>
-                            </Body>
-                            <Right>
-                                <Label style={styles.font}>{this.state.jointUsers.user_amount}$</Label>
-                            </Right>
-                        </ListItem>
-                        <ListItem style={styles.list}>
-                            <Body>
-                            <H3 style={styles.font}>Need to be paid</H3>
-                            </Body>
-                            <Right>
-                                {
-                                    ((this.state.jointUsers.lecture_price - this.state.jointUsers.user_amount) == 0 ) ? 
-                                    (
-                                        <Label style={styles.font}>None</Label>
-                                    ):
-                                    (
-                                        <Label style={styles.font}>{this.state.jointUsers.lecture_price - this.state.jointUsers.user_amount}</Label>
-                                    )
-                                }
-                            </Right>
-                        </ListItem>
-                    </Card>
-                </View>
+                <FlatList
+                    data={this.state.lecture.joint_users}
+                    renderItem={({item}) => (
 
+                    <View style={styles.Box1}>  
+                        <Card style={{borderWidth: 0}} transparent={true}>
+                        
+                            <CardItem style={{}}>
+                                <Left>
+                                <Thumbnail source={require('../../../images/Background.png')} />
+                                <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{item.user_name}</Text>
+                                </Left>
+                                <Right style={styles.allStarsComment}>
+                                    <View style={styles.firstBox}></View>
+                                </Right> 
+                            </CardItem>
+                            <ListItem style={styles.list}>
+                                <Body>
+                                <H3 style={styles.font}>Paid</H3>
+                                </Body>
+                                <Right>
+                                    <Label style={styles.font}>{item.pivot.amount}$</Label>
+                                </Right>
+                            </ListItem>
+                            <ListItem style={styles.list}>
+                                <Body>
+                                <H3 style={styles.font}>Need to be paid</H3>
+                                </Body>
+                                 <Right>
+                                    {
+                                        ((this.state.lecture.price - item.pivot.amount) == 0 ) ? 
+                                        (
+                                            <Label style={styles.font}>None</Label>
+                                        ):
+                                        (
+                                            <Label style={styles.font}>{this.state.lecture.price - item.pivot.amount}</Label>
+                                        )
+                                    }
+                                </Right>
+                            </ListItem>
+                        </Card>
+                    </View>
+                )}
+                keyExtractor = { (item, index) => index.toString() }
+                />
 
             </AppTemplate>
         );
@@ -77,14 +106,12 @@ export default class LecturePayment extends Component {
 
 const styles = StyleSheet.create({
     Box: {
-        flex:1, 
         height: 150, 
         backgroundColor: '#fff',
         borderRadius: 5,
         marginBottom: 30
     },
     Box1: {
-        flex:1,  
         backgroundColor: '#fff',
         borderRadius: 5,
         padding: 5, 

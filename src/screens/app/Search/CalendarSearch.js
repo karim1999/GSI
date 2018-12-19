@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Icon, Form, Item, Picker, DatePicker, Button, Toast } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
@@ -58,7 +58,7 @@ export default class CalendarSearch extends Component {
   // specify how empty date content with no items should be rendered
   renderEmptyDate={() => {return (<Text>This is empty date!</Text>);}}
   // specify how agenda knob should look like
-  renderKnob={() => {return (<Text>aaa</Text>);}}
+  renderKnob={() => {return (<Text style={styles.click}></Text>);}}
   // specify what should be rendered instead of ActivityIndicator
   renderEmptyData = {() => {return (<Text style={styles.emptyDate}>This is empty date!</Text>);}}
   // specify your item comparison function for increased performance
@@ -88,11 +88,11 @@ export default class CalendarSearch extends Component {
 
     renderItem(item) {
       return (
-        <View style={[styles.item, {height:100}]}>
-          <Text style={styles.itemTxt}>{item.start_duration}</Text>
+        <TouchableOpacity style={[styles.item, {height:100}]}  onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
           <Text style={styles.itemTxt}>{item.title}</Text>
-          <Text style={styles.itemTxt}>{item.start_date}</Text>      
-        </View>
+          <Text style={styles.itemTxt}>{item.subject}</Text>  
+          <Text style={styles.itemTxtDate}>{item.start_duration}</Text>    
+        </TouchableOpacity>
       );
     };
 
@@ -123,6 +123,18 @@ const styles = StyleSheet.create({
   itemTxt:{
     fontSize: 17,
     fontFamily: "Pangolin-Regular",
-    textAlign: 'center'
+    textAlign: 'left'
+  },
+  itemTxtDate:{
+    fontSize: 17,
+    fontFamily: "Pangolin-Regular",
+    textAlign: 'left',
+    color: '#9eb1c1'
+  },
+  click:{
+    width: 50, 
+    height: 10, 
+    backgroundColor: "#f3f3f4", 
+    borderRadius:5, 
   } 
 });

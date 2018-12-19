@@ -22,15 +22,50 @@ import Server from "../../../constants/config";
 import Table from 'react-native-simple-table'
 import _ from 'lodash'
 import MultiSelect from 'react-native-multiple-select';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment'
 
 export default class EditLecture extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lecture: this.props.navigation.state.params,
+            id: this.props.navigation.state.params.id,
+            title: this.props.navigation.state.params.title,
+            subject: this.props.navigation.state.params.subject,
+            price: this.props.navigation.state.params.price,
+            start_duration: this.props.navigation.state.params.start_duration,
+            end_duration: this.props.navigation.state.params.end_duration,
+            type_course: this.props.navigation.state.params.type_course,
+            gender: this.props.navigation.state.params.gender,
+            allowed: this.props.navigation.state.params.allowed,
+            description: this.props.navigation.state.params.description,
+            isStartTimeVisible: false,
+            isEndTimeVisible: false,
+            isLoading: false
         };
     }
 
+    // Start timePicker
+    _showStartTimePicker = () => this.setState({ isStartTimeVisible: true });
+    _showEndTimePicker = () => this.setState({ isEndTimeVisible: true });
+
+    _hideStartTimePicker = () => this.setState({ isStartTimeVisible: false });
+    _hideEndTimePicker = () => this.setState({ isEndTimeVisible: false });
+    
+    _handleStartTimePicked = (date) => {
+        this.setState({
+            isStartTimeVisible: false,
+            start_duration: moment(date).format(' h:mm a')
+        })
+    };
+
+    _handleEndTimePicked = (date) => {
+        this.setState({
+            isEndTimeVisible: false,
+            end_duration: moment(date).format(' h:mm a')
+        })
+    };
+    //End timePicker
    
 
     selectImage(){
@@ -69,7 +104,14 @@ export default class EditLecture extends Component {
         return AsyncStorage.getItem('token').then(userToken => {
             let data = new FormData();
             data.append('title', this.state.title);
+            data.append('subject', this.state.subject);
             data.append('price', this.state.price);
+            data.append('end_date', this.state.end_date);
+            data.append('start_duration', this.state.start_duration);
+            data.append('end_duration', this.state.end_duration);
+            data.append('type_course', this.state.type_course);
+            data.append('gender', this.state.gender);
+            data.append('allowed', this.state.allowed);
             data.append('description', this.state.description);
             if (this.state.img) {
                 data.append('img', {
@@ -78,18 +120,19 @@ export default class EditLecture extends Component {
                     type: 'image/png'
                 });
             }
-            return axios.post(Server.url + 'api/editCourse/'+id+'?token='+userToken, data).then(response => {
+            return axios.post(Server.url + 'api/editLecture/'+id+'?token='+userToken, data).then(response => {
                 this.setState({
                     isLoading: false,
                 });
                 Toast.show({
-                    text: "A Course was added successfully",
+                    text: "A lecture was added successfully",
                     buttonText: "Ok",
                     type: "success"
                 });
                 this.props.navigation.navigate("CourseView");
             }).catch(error => {
-                alert(error.data)
+                alert(JSON.stringify(data))
+                alert(id)
             })
         }).then(() => {
             this.setState({
@@ -97,11 +140,48 @@ export default class EditLecture extends Component {
             });
         });
     }
+
+    componentDidMount(){
+        // var timeStart = new Date("01/01/2007 " + this.state.start_duration).getHours() + (new Date("01/01/2007 " + this.state.start_duration).getMinutes()/60);
+        // var timeEnd = new Date("01/01/2007 " + this.state.end_duration).getHours()+ (new Date("01/01/2007 " + this.state.end_duration).getMinutes()/60);
+        // if(timeStart>timeEnd){
+        //    var hourDiff = timeStart - timeEnd;
+        //    alert(hourDiff.toFixed(1) * 10);
+        // }else{
+        //    var hourDiff = timeEnd - timeStart;
+        //    alert(hourDiff.toFixed(1) * 10); 
+        // }
+        
+        // var timeStart = new Date("01/01/2007 " + this.state.start_duration).getHours()
+
+        // var date = new Date().getHours();
+        formated_date = this.state.start_duration.replace('-','/').replace('-','/')
+        alert(formated_date)
+        date = new Date(formated_date);
+        
+        var x = Math.abs(moment().diff(moment( date.getTime()), 'hours', true))
+        alert('x = '+x)
+        
+        
+        // if((timeStart-5) < 0){
+        //     var x = (timeStart -5) +12;
+        //     // var d = moment('2017-06-10T16:08:00').format('YYYY-MM-DD')
+        //     // d.setDate(d.getDate()-1);
+        //     var d = new Date(this.state.start_date)
+        //     alert(d)
+        // }else{
+        //     var x = timeStart -5;
+        //     alert(x)
+        // }
+        // var d = new Date(Date.now())
+        // d.setDate(d.getDate()-5);
+        // alert(d);
+    }
     
     render() {
         const data = this.state;
         return (
-            <AppTemplate>
+            <AppTemplate title = {"Edit " + this.state.title} back navigation={this.props.navigation}>
                     <Form style={styles.container}>
 
                         <Item style={{height: 70}}>
@@ -110,7 +190,7 @@ export default class EditLecture extends Component {
                             <Input onChangeText={(title) => this.setState({title})}
                                    placeholder="ex: Quantum mechanics..."
                                    placeholderTextColor="#ccc5c5"
-                                   value={this.state.lecture.title}
+                                   value={this.state.title}
                             />
                         </Item>
 
@@ -120,65 +200,37 @@ export default class EditLecture extends Component {
                             <Input onChangeText={(subject) => this.setState({subject})}
                                    placeholder="ex: Physics..."
                                    placeholderTextColor="#ccc5c5"
-                                   value={this.state.lecture.subject}
+                                   value={this.state.subject}
                             />
-                        </Item>
-
-                        <Item style={styles.lecture}>
-                            <Icon type="FontAwesome" name="calendar" />
-                            
-                            <Text style={styles.lectureTxt}>From</Text>
-                            <DatePicker
-                                defaultDate={new Date((this.state.start_date))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Select date"
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#d3d3d3" }}
-                                onDateChange={(val) => this.setState({start_date: val})}
-                                style={styles.form}
-                                />
-
-                            <Text style={styles.lectureTxt}>To</Text>
-                            <DatePicker
-                                defaultDate={new Date((this.state.end_date))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Select date"
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#d3d3d3" }}
-                                onDateChange={(val) => this.setState({end_date: val})}
-                                style={styles.form}
-                                />
                         </Item>
 
                         <Item style={{height: 70}}>
                             <Icon name='md-time' />
-                            <Text style={styles.lectureTxt}>From</Text>
-                            <View style={styles.time}>
-                                <TimePicker
-                                start_duration={this.start_duration}
-                                selectedMinutes={this.selectedMinutes}
-                                onChange={(hours, minutes) => this.setState({ start_duration: hours, selectedMinutes: minutes })}
-                            />
+                            <Text style={styles.lectureTxt}>From </Text>
+                            <View>
+                                <TouchableOpacity onPress={this._showStartTimePicker}>
+                                    <Text>{this.state.start_duration}</Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    isVisible={this.state.isStartTimeVisible}
+                                    onConfirm={this._handleStartTimePicked}
+                                    onCancel={this._hideStartTimePicker}
+                                    mode={'time'}
+                                    is24Hour={false}
+                                />
                           </View>
                           <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
-                            <View style={styles.time}>
-                                <TimePicker
-                                end_duration={this.end_duration}
-                                selectedMinutes={this.selectedMinutes}
-                                onChange={(hours, minutes) => this.setState({ end_duration: hours, selectedMinutes: minutes })}
-                            />
+                            <View>
+                                <TouchableOpacity onPress={this._showEndTimePicker}>
+                                    <Text>{this.state.end_duration}</Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    isVisible={this.state.isEndTimeVisible}
+                                    onConfirm={this._handleEndTimePicked}
+                                    onCancel={this._hideEndTimePicker}
+                                    mode={'time'}
+                                    is24Hour={false}
+                                />
                           </View>
                         </Item>
 
@@ -189,7 +241,7 @@ export default class EditLecture extends Component {
                                     keyboardType='numeric'
                                     placeholder="ex:20 $..."
                                     placeholderTextColor="#ccc5c5"
-                                    value={this.state.lecture.price}
+                                    value={`${this.state.price}`}
                             />
                         </Item>
 
@@ -209,7 +261,7 @@ export default class EditLecture extends Component {
                             </Button>
                         </Item>
 
-                        {/* <Item style={{height: 70}}>
+                        <Item style={{height: 70}}>
                             <Icon type="Foundation" name='book' />
                             <Text style={styles.font}>Course Type </Text>
 
@@ -246,7 +298,7 @@ export default class EditLecture extends Component {
                                     onPress={(gender) => {this.setState({gender: 3})}}/>
                             </View>
 
-                        </Item> */}
+                        </Item>
 
                         <Item style={{height: 70}}>
                             <Icon type="FontAwesome" name='users' />
@@ -255,7 +307,7 @@ export default class EditLecture extends Component {
                                     keyboardType='numeric'
                                     placeholder="ex:150 student..."
                                     placeholderTextColor="#ccc5c5"
-                                    value={this.state.lecture.allowed}
+                                    value={`${this.state.allowed}`}
                             />
                         </Item>
 
@@ -272,11 +324,11 @@ export default class EditLecture extends Component {
                                 onChangeText={(description) => this.setState({description})}
                                 placeholder="Write more about the lecture"
                                 placeholderTextColor="#ccc5c5"
-                                value={this.state.lecture.description}
+                                value={this.state.description}
                             />
                         </Item>
                         <Button
-                            onPress={() => this.EditLecture()}
+                            onPress={() => this.EditLecture(this.state.id)}
                             style={{flexDirection: "row", backgroundColor: '#fdeed1'}}
                             block light
                         >
@@ -292,27 +344,6 @@ export default class EditLecture extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 18,
-        padding: 10,
-        textAlign: 'center'
-      },
-    put: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-      },
-      textinput: {
-        marginTop: 30,
-        backgroundColor: '#DDDDDD',
-        height: 40,
-        width: 200
-      },
-    all:{
-        padding:20,
-        backgroundColor: '#f1f1f1',
-    },
     container:{
         backgroundColor: '#fff',
         flex: 1,
@@ -356,7 +387,4 @@ const styles = StyleSheet.create({
     font:{
         fontFamily: "Pangolin-Regular",
     },
-    time: {
-        width: 100
-      },
 });

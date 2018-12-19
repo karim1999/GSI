@@ -38,7 +38,7 @@ export default class Payments extends Component {
 
     render() {
         return (
-            <AppTemplate>
+            <AppTemplate title="Payment">
                 {
                     (this.state.isLoading)? (
                         <View>
@@ -57,26 +57,33 @@ export default class Payments extends Component {
                                 <View style={styles.firstBox}></View>
 
                                 <View style={styles.secondBox}>
-                                    <H3 style={styles.font}>{item.title} :</H3>
+                                    <H3 style={styles.font}>{item.title}</H3>
 
                                     <Item style={styles.item}>
                                         <View style={styles.viewImage}>
                                             <Image source={require('../../../images/idea.png')} style={styles.image}/>
                                         </View>
                                         <View>
-                                        <Item style={{ backgroundColor: '#fff', borderColor: 'transparent' }}>
-                                            <H3 style={styles.font}>Students: </H3>
-                                            <H3> {item.joint_users.length}</H3>
+                                        <Item style={{ backgroundColor: '#fff', borderColor: 'transparent', paddingBottom: 10 }}>
+                                            <H3 style={styles.font}>Students </H3>
+                                            <H3 style={{marginLeft: 60}}>{item.joint_users.length}</H3>
                                         </Item>
                                         
-                                        <Item style={styles.item2}>
-                                            <Icon type="Entypo" name="back-in-time" />
-                                            <Text style={styles.lectureTxt}>Duration</Text>
-                                            <Text style={styles.right}> {item.start_duration} To {item.end_duration}</Text>
-                                            
+                                        <Item style={{ backgroundColor: '#fff', borderColor: 'transparent', paddingBottom: 10 }}>
+                                            <Icon type="FontAwesome" name="hourglass-start" />
+                                            <Text> {item.start_duration}</Text>
                                         </Item>
 
-                                        <FlatList
+                                        <Item style={{ backgroundColor: '#fff', borderColor: 'transparent' }}>
+                                            <Icon type="FontAwesome" name="hourglass-end" />
+                                            <Text> {item.end_duration}</Text>
+                                        </Item>
+
+                                        <Button style={styles.button} onPress={()=> this.props.navigation.navigate('LecturePayment', {...item})}>
+                                            <Text style={styles.buttonTxt}>View Student's Track</Text>
+                                        </Button>
+                                        
+                                        {/* <FlatList
                                         data={item.joint_users}
                                         renderItem={(student) => (
 
@@ -88,7 +95,7 @@ export default class Payments extends Component {
                                             
                                         )}
                                         keyExtractor = { (item, index) => index.toString() }
-                                        />
+                                        /> */}
 
                                         </View>
                                     </Item>
@@ -108,25 +115,20 @@ export default class Payments extends Component {
 
 const styles = StyleSheet.create({
     Box: {
-        flex:1, 
-        height: 170, 
+        height: 200, 
         backgroundColor: '#fff',
-        borderRadius: 5,
         flexDirection: 'row',
         marginBottom: 30
     },
     firstBox:{
         width: 30, 
-        height: 170, 
+        height: 200, 
         backgroundColor: Color.firstColor, 
-        borderTopLeftRadius:5, 
-        borderBottomLeftRadius:5
     },
     secondBox:{
         padding: 20
     },
     item:{
-        paddingTop: 10,
         backgroundColor: '#fff',
         borderColor: 'transparent'
     },
@@ -138,14 +140,12 @@ const styles = StyleSheet.create({
     },
     image:{
         width: 100, 
-        height: 100, 
-        borderRadius: 10        
+        height: 100,    
     },
     button:{
         backgroundColor: '#fef5e5',
         padding: 10,
-        borderRadius: 10,
-        marginTop: 20,
+        marginTop: 13,
         justifyContent: 'center',
         alignSelf: 'center',
     },

@@ -38,7 +38,23 @@ export default class Wallet extends Component {
 
     render() {
         return (
-            <AppTemplate>
+            <AppTemplate title="Wallet">
+
+                    <View style={styles.Box0}>
+                        <Item style={{height: 70, padding: 15, paddingBottom:0, backgroundColor: '#fff', borderColor: 'transparent' }}>
+                            <Icon type="FontAwesome" name='user' />
+                            <Label style={styles.font}>Student Name </Label>
+                            <Input
+                                    placeholder="Name..."
+                                    placeholderTextColor="#ccc5c5"
+                            />
+                        </Item>
+
+                        <Button style={styles.button} >
+                            <Text style={styles.buttonTxt}>SEARCH</Text>
+                        </Button>
+
+                    </View>
             
                 {
                     (this.state.isLoading)? (
@@ -55,22 +71,6 @@ export default class Wallet extends Component {
                             renderItem={({item}) => (
             
                             <View>
-
-                                <View style={styles.Box0}>
-                                    <Item style={{height: 70, padding: 15, paddingBottom:0, backgroundColor: '#fff', borderColor: 'transparent' }}>
-                                        <Icon type="FontAwesome" name='user' />
-                                        <Label style={styles.font}>Student Name </Label>
-                                        <Input
-                                                placeholder="Name..."
-                                                placeholderTextColor="#ccc5c5"
-                                        />
-                                    </Item>
-
-                                    <Button style={styles.button} >
-                                        <Text style={styles.buttonTxt}>Search</Text>
-                                    </Button>
-
-                                </View>
 
                                 <FlatList
                                 data={item.joint_users}
@@ -102,7 +102,7 @@ export default class Wallet extends Component {
                                     <Item style={{height: 45}}>
                                         <Image source={require('../../../images/calendar_131786.png')} style={styles.image}/>
                                         <Label style={styles.font}>Date </Label>
-                                        <Text style={styles.right}>{item.start_date} </Text>
+                                        <Text style={styles.right}>{item.start_duration} </Text>
                                     </Item>
                                 </View>
 
@@ -126,18 +126,14 @@ export default class Wallet extends Component {
 }
 
 const styles = StyleSheet.create({
-    Box0: {
-        flex:1, 
-        height: 150, 
+    Box0: { 
         backgroundColor: '#fff',
-        borderRadius: 5,
+        height: 150,
         marginBottom: 30
     },
     Box: {
-        flex:1, 
         height: 180, 
         backgroundColor: '#fff',
-        borderRadius: 5,
         flexDirection: 'row',
         marginBottom: 30
     },
@@ -145,8 +141,6 @@ const styles = StyleSheet.create({
         width: 30, 
         height: 180, 
         backgroundColor: Color.firstColor, 
-        borderTopLeftRadius:5, 
-        borderBottomLeftRadius:5
     },
     secondBox:{
         paddingTop: 0,
@@ -154,27 +148,22 @@ const styles = StyleSheet.create({
     },
     button:{
         backgroundColor: '#fef5e5',
-        paddingTop: 10,
-        paddingBottom: 10,
-        padding: 35,
-        borderRadius: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
+        padding: 10,
         marginTop: 20,
         justifyContent: 'center',
         alignSelf: 'center',
     },
     buttonTxt:{
         color: '#000',
-        fontSize: 20,
-    },
-    price:{
-        marginLeft: 115
+        fontSize: 15,
     },
     price2:{
         marginLeft: 140
     },
     right:{
-        position: 'absolute',
-        left: 200,
+        marginLeft: 125,
         fontFamily: "Pangolin-Regular",
     },
     priceText:{
@@ -193,6 +182,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:5,
         paddingLeft: 20,
         paddingRight: 20,
+        padding: 0.5
     },
     font:{
         fontFamily: "Pangolin-Regular",

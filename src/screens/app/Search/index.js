@@ -1,18 +1,87 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Icon, Form, Item, Picker, DatePicker, Button, } from 'native-base';
+import { StyleSheet, Text, View, Image, AsyncStorage, TouchableOpacity } from 'react-native';
+import { Icon, Form, Item, DatePicker, Button, Input } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
-
+import axios from "axios";
+import Server from "../../../constants/config";
+import _ from 'lodash';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 export default class Search extends Component {
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date() };
-        this.setDate = this.setDate.bind(this);
+        this.state = { 
+            showLectures: [],
+            isLoading: false,
+            title: "",
+            subject: "",
+            teacher: "",
+            isStartTimeVisible: false,
+            isEndTimeVisible: false,
+            start_duration: " Start Time",
+            end_duration: " End Time",
+         };;
       }
-      setDate(newDate) {
-        this.setState({ chosenDate: newDate });
+
+      _showStartTimePicker = () => this.setState({ isStartTimeVisible: true });
+      _showEndTimePicker = () => this.setState({ isEndTimeVisible: true });
+  
+      _hideStartTimePicker = () => this.setState({ isStartTimeVisible: false });
+      _hideEndTimePicker = () => this.setState({ isEndTimeVisible: false });
+      
+      _handleStartTimePicked = (date) => {
+          this.setState({
+              isStartTimeVisible: false,
+              start_duration: moment(date).format('YYYY-MM-DD h:mm a')
+          })
+      };
+  
+      _handleEndTimePicked = (date) => {
+          this.setState({
+              isEndTimeVisible: false,
+              end_duration: moment(date).format('YYYY-MM-DD h:mm a')
+          })
+      };
+
+      componentDidMount(){
+        this.setState({
+            isLoading: true
+        })
+        return AsyncStorage.getItem('token').then(userToken => {
+            return axios.get(Server.url + 'api/lectures?token='+userToken)
+            .then(response => {
+                this.setState({
+                    isLoading: false,
+                    showLectures: response.data
+                })
+            }).catch(error => {
+                Toast.show({
+                    text: 'Error reachig server',
+                    buttonText: "Ok",
+                    type: "danger"
+                })
+            })
+        })
+    }
+
+      async Data(){
+          let data = [];
+          data = this.state.showLectures;
+          
+          if(this.state.title !== ""){
+              data = await _.filter(data, lecture => lecture.title.toLowerCase().indexOf(this.state.title) > -1);
+          }
+
+          if(this.state.subject !== ""){
+              data = await _.filter(data, lecture => lecture.subject.toLowerCase().indexOf(this.state.subject) > -1);
+          }
+
+          formated_date = this.state.end_duration.replace('-','/').replace('-','/')
+           x=moment(this.state.start_duration).isBefore(formated_date, 'year');
+           
+           
       }
+    
     render() {
         return (
             <AppTemplate navigation={this.props.navigation}>
@@ -20,69 +89,58 @@ export default class Search extends Component {
                     <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="user" />
                         <Text style={styles.lectureTxt}>Lecture</Text>
-                        <Form style={styles.form}>
-                            <Item picker>
-                                <Picker
-                                    mode="dropdown"
-                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
-                                    style={{ width: undefined }}
-                                    placeholder="Select your SIM"
-                                    placeholderStyle={{ color: "#bfc6ea" }}
-                                    placeholderIconColor="#007aff"
-                                    >
-                                    <Picker.Item label="Wallet" value="key0" />
-                                    <Picker.Item label="ATM Card" value="key1" />
-                                    <Picker.Item label="Debit Card" value="key2" />
-                                    <Picker.Item label="Credit Card" value="key3" />
-                                    <Picker.Item label="Net Banking" value="key4" />
-                                </Picker>
-                            </Item>
-                        </Form>
+                        <Input onChangeText={(title) => this.setState({title})}
+                                placeholder="ex: Quantum mechanics..."
+                                placeholderTextColor="#ccc5c5"
+                        />
                     </Item>
 
                     <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="calendar" />
-                        <Text style={styles.lectureTxt}>Day</Text>
-                        <View style={{marginLeft: 100}}>
-                            <DatePicker
-                                defaultDate={new Date(2018, 4, 4)}
-                                minimumDate={new Date(2018, 1, 1)}
-                                maximumDate={new Date(2018, 12, 31)}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Select date"
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#d3d3d3" }}
-                                onDateChange={this.setDate}
-                                style={styles.form}
+                        <Text style={styles.lectureTxt}>From </Text>
+                        <View>
+                            <TouchableOpacity onPress={this._showStartTimePicker}>
+                                <Text>{this.state.start_duration}</Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                isVisible={this.state.isStartTimeVisible}
+                                onConfirm={this._handleStartTimePicked}
+                                onCancel={this._hideStartTimePicker}
+                                mode={'datetime'}
+                                is24Hour={false}
                             />
-                        </View>
+                      </View>
+                      <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
+                        <View>
+                            <TouchableOpacity onPress={this._showEndTimePicker}>
+                                <Text>{this.state.end_duration}</Text>
+                            </TouchableOpacity>
+                            <DateTimePicker
+                                isVisible={this.state.isEndTimeVisible}
+                                onConfirm={this._handleEndTimePicked}
+                                onCancel={this._hideEndTimePicker}
+                                mode={'datetime'}
+                                is24Hour={false}
+                            />
+                      </View>
                     </Item>
 
                     <Item style={styles.lecture}>
                         <Icon type="Foundation" name="results" />
                         <Text style={styles.lectureTxt}>Subject</Text>
-                        <Form style={styles.form}>
-                            <Item picker>
-                                <Picker
-                                    mode="dropdown"
-                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
-                                    style={{ width: undefined }}
-                                    placeholder="Select your SIM"
-                                    placeholderStyle={{ color: "#bfc6ea" }}
-                                    placeholderIconColor="#007aff"
-                                    >
-                                    <Picker.Item label="Wallet" value="key0" />
-                                    <Picker.Item label="ATM Card" value="key1" />
-                                    <Picker.Item label="Debit Card" value="key2" />
-                                    <Picker.Item label="Credit Card" value="key3" />
-                                    <Picker.Item label="Net Banking" value="key4" />
-                                </Picker>
-                            </Item>
-                        </Form>
+                        <Input onChangeText={(subject) => this.setState({subject})}
+                                placeholder="ex: Quantum mechanics..."
+                                placeholderTextColor="#ccc5c5"
+                        />
+                    </Item>
+
+                    <Item style={styles.lecture}>
+                        <Icon type="Foundation" name="results" />
+                        <Text style={styles.lectureTxt}>Teacher</Text>
+                        <Input onChangeText={(teacher) => this.setState({teacher})}
+                                placeholder="ex: Quantum mechanics..."
+                                placeholderTextColor="#ccc5c5"
+                        />
                     </Item>
 
                     <Button style={styles.button} >

@@ -22,6 +22,8 @@ import Server from "../../../constants/config";
 import Table from 'react-native-simple-table'
 import _ from 'lodash'
 import MultiSelect from 'react-native-multiple-select';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment'
 
 export default class AddLecture extends Component {
     constructor(props) {
@@ -30,40 +32,59 @@ export default class AddLecture extends Component {
             isLoading: false,
             title: "",
             subject: "",
-            price: "",
+            price: 0,
             type_course: "",
             gender: "",
             allowed: "",
             img: "",
             description: "",
-            start_duration: "",
-            end_duration: "",
-            start_date: "",
-            end_date: "",
+            start_duration: " Start Time",
+            end_duration: " End Time",
             selectedHours: 0,
             selectedMinutes: 0,
             searchedAdresses: [],
             searchedUsers: [],
-            tableData:[1,2], 
-            columns:[
-                {
-                  title: 'Name',
-                  dataIndex: 'name',
-                  width: 140
-                },
-                {
-                  title: 'Mobile',
-                  dataIndex: 'mobile',
-                  width: 105
-                },
-              ]
+            tableData:[], 
+            a:[],
+            isStartTimeVisible: false,
+            isEndTimeVisible: false,
+            namePhone:[]
         };
         
-        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); //autoComplete
+        // this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); //autoComplete
     }
+
+    // Start timePicker
+    _showStartTimePicker = () => this.setState({ isStartTimeVisible: true });
+    _showEndTimePicker = () => this.setState({ isEndTimeVisible: true });
+
+    _hideStartTimePicker = () => this.setState({ isStartTimeVisible: false });
+    _hideEndTimePicker = () => this.setState({ isEndTimeVisible: false });
+    
+    _handleStartTimePicked = (date) => {
+        this.setState({
+            isStartTimeVisible: false,
+            start_duration: moment(date).format('YYYY-MM-DD h:mm a')
+        })
+    };
+
+    _handleEndTimePicked = (date) => {
+        this.setState({
+            isEndTimeVisible: false,
+            end_duration: moment(date).format('YYYY-MM-DD h:mm a')
+        })
+        var now  = this.state.start_duration;
+        var then = this.state.end_duration;
+        
+       diffrance = Math.abs( moment(now,"YYYY-MM-DD HH:mm A").diff(moment(then,"YYYY-MM-DD HH:mm A"),'hours',true))
+       price = Math.round(diffrance * 10);
+       this.setState({price})
+    };
+    //End timePicker
 
     //start autoComplete
     componentDidMount(){
+        var a =[];
         return axios.get(Server.url + 'api/addlectureusers')
         .then(response=>{
             this.setState({
@@ -73,54 +94,51 @@ export default class AddLecture extends Component {
             alert(JSON.stringify(error))
         })
     }
-    searchedAdresses = (searchedText) => {
-        var adresses =  this.state.searchedUsers
+    // searchedAdresses = (searchedText) => {
+    //     var adresses =  this.state.searchedUsers
         
-        var searchedAdresses = adresses.filter(function(adress) {
-            return adress.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
-        });
-        this.setState({searchedAdresses: searchedAdresses});
-        };
+    //     var searchedAdresses = adresses.filter(function(adress) {
+    //         return adress.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
+    //     });
+    //     this.setState({searchedAdresses: searchedAdresses});
+    //     };
 
         onSelectedItemsChange = tableData => {
             this.setState({ tableData });
-            alert(JSON.stringify(tableData))
         };
 
-        add_student = (id,name,mobile)=>{
-            tableData = {
-                id,
-                name,
-                mobile
-              }
-            oldTableData= this.state.tableData;
-            oldTableData.push(tableData);
-            this.setState({tableData:oldTableData})
-            // alert(JSON.stringify(this.state.tableData))
+        // add_student = (id,name,mobile)=>{
+        //     tableData = {
+        //         id,
+        //       }
+        //     oldTableData= this.state.tableData;
+        //     oldTableData.push(tableData);
+        //     this.setState({tableData:oldTableData})
+        //     // alert(JSON.stringify(this.state.tableData))
 
-            // this.setState({tableData:[{
-            //     'name': 'asdasd',
-            //     'mobile': 'asdasd',
-            //   },{
-            //     'name': 'asdasd',
-            //     'mobile': 'asdasd',
-            //   },
-            //   {
-            //     'name': 'abcsdsdsdd',
-            //     'mobile': '8858855',
-            //   }
+        //     // this.setState({tableData:[{
+        //     //     'name': 'asdasd',
+        //     //     'mobile': 'asdasd',
+        //     //   },{
+        //     //     'name': 'asdasd',
+        //     //     'mobile': 'asdasd',
+        //     //   },
+        //     //   {
+        //     //     'name': 'abcsdsdsdd',
+        //     //     'mobile': '8858855',
+        //     //   }
             
-            // ]})
+        //     // ]})
+        // renderAdress = (adress) => {
+        //     return (
+        //         <TouchableOpacity onPress={()=>this.add_student(adress.id,adress.name,adress.phone)}>
+        //             <Text  >{adress.name}, {adress.phone}</Text>
+        //         </TouchableOpacity>
+        //     );
+        //     };
             
-        }
+        // }
 
-        renderAdress = (adress) => {
-        return (
-            <TouchableOpacity onPress={()=>this.add_student(adress.id,adress.name,adress.phone)}>
-                <Text  >{adress.name}, {adress.phone}</Text>
-            </TouchableOpacity>
-        );
-        };
     //end autoComplete
 
     selectImage(){
@@ -158,8 +176,7 @@ export default class AddLecture extends Component {
         });
             if(this.state.title == "" || this.state.subject == "" || this.state.type_course == "" || 
             this.state.gender == "" || this.state.allowed == ""  || this.state.description == "" || 
-            this.state.start_duration == "" || this.state.end_duration == "" || this.state.start_date == "" || 
-            this.state.end_date == ""){
+            this.state.start_duration == "" || this.state.end_duration == ""){
                 Toast.show({
                     text: 'please fill out fields.',
                     type: "danger",
@@ -169,23 +186,34 @@ export default class AddLecture extends Component {
                     isLoading: false
                 });
             }else{
+            // var timeStart = new Date("01/01/2007 " + this.state.start_duration).getHours() + (new Date("01/01/2007 " + this.state.start_duration).getMinutes()/60);
+            // var timeEnd = new Date("01/01/2007 " + this.state.end_duration).getHours()+ (new Date("01/01/2007 " + this.state.end_duration).getMinutes()/60);
                 return AsyncStorage.getItem('token').then(userToken => {
                     let data = new FormData();
+                    duration_date = this.state.start_duration.split(" ")[0];
+                    data.append('start_date', duration_date);
                     data.append('title', this.state.title);
                     data.append('subject', this.state.subject);
                     data.append('type_course', this.state.type_course);
                     data.append('gender', this.state.gender);
+                    data.append('price', this.state.price);
                     data.append('allowed', this.state.allowed);
                     data.append('description', this.state.description);
                     data.append('start_duration', this.state.start_duration);
                     data.append('end_duration', this.state.end_duration);
-                    data.append('start_date', new Date(this.state.start_date).toLocaleDateString('en-GB'));
-                    data.append('end_date', new Date(this.state.end_date).toLocaleDateString('en-GB'));
-                    if (this.state.price) {
-                        data.append('price', this.state.price * (this.state.end_duration - this.state.start_duration ));
-                    }else{
-                        data.append('price', (this.state.end_duration - this.state.start_duration ) * 10);
-                    }
+                    // if(timeStart>timeEnd){
+                    //     if (this.state.price) {
+                    //         data.append('price', this.state.price * (timeStart - timeEnd ));
+                    //     }else{
+                    //         data.append('price', (timeStart - timeEnd ) * 10);
+                    //     }                        
+                    // }else{
+                    //     if (this.state.price) {
+                    //         data.append('price', this.state.price * (timeEnd - timeStart ));
+                    //     }else{
+                    //         data.append('price', (timeEnd - timeStart ) * 10);
+                    //     }
+                    // }
 
                     if (this.state.img) {
                         data.append('img', {
@@ -195,22 +223,50 @@ export default class AddLecture extends Component {
                         });
                     }
 
-                    return axios.post(Server.url + 'api/addLecture?token='+userToken, data).then(response => {
-                        this.setState({
-                            isLoading: false,
-                        });
-                        Toast.show({
-                            text: "A Lecture was added successfully",
-                            buttonText: "Ok",
-                            type: "success"
-                        });
-                        this.props.navigation.navigate("Teacher");
-                    }).catch(error => {
-                        alert(JSON.stringify(data));
-                        this.setState({
-                            isLoading: false,
-                        });
-                    })
+                    if(this.state.tableData == []){
+                        return axios.post(Server.url + 'api/addLecture?token='+userToken, data).then(response => {
+                            this.setState({
+                                isLoading: false,
+                            });
+                            Toast.show({
+                                text: "A Lecture was added successfully",
+                                buttonText: "Ok",
+                                type: "success"
+                            });
+                            this.props.navigation.navigate("Teacher");
+                        }).catch(error => {
+                            alert(JSON.stringify(data));
+                            this.setState({
+                                isLoading: false,
+                            });
+                        })
+                        
+                    }else{
+                        return axios.post(Server.url + 'api/addLecture?token='+userToken, data).then(response => {
+                            this.setState({
+                                isLoading: false,
+                            });
+                            Toast.show({
+                                text: "A Lecture was added successfully",
+                                buttonText: "Ok",
+                                type: "success"
+                            });
+                            this.props.navigation.navigate("Teacher", {isLoading: true});
+                            for(var i=0; i<this.state.tableData.length; i++ ){
+                                axios.post(Server.url + 'api/jointlectureusers/'+response.data.id+'/'+ this.state.tableData[i])
+                                .then(response => {
+                                }).catch(error => {
+                                    alert(JSON.stringify(error))
+                                })
+                            }
+                        }).catch(error => {
+                            alert(JSON.stringify(data));
+                            this.setState({
+                                isLoading: false,
+                            });
+                        })
+                    }
+
                 }).then(() => {
                     this.setState({
                         isLoading: false
@@ -226,7 +282,7 @@ export default class AddLecture extends Component {
     render() {
         const data = this.state;
         return (
-            <AppTemplate>
+            <AppTemplate title="Add lecture" back navigation={this.props.navigation}>
                     <Form style={styles.container}>
 
                         <Item style={{height: 70}}>
@@ -247,61 +303,33 @@ export default class AddLecture extends Component {
                             />
                         </Item>
 
-                        <Item style={styles.lecture}>
-                            <Icon type="FontAwesome" name="calendar" />
-                            
-                            <Text style={styles.lectureTxt}>From</Text>
-                            <DatePicker
-                                defaultDate={new Date((this.state.start_date))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Select date"
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#d3d3d3" }}
-                                onDateChange={(val) => this.setState({start_date: val})}
-                                style={styles.form}
-                                />
-
-                            <Text style={styles.lectureTxt}>To</Text>
-                            <DatePicker
-                                defaultDate={new Date((this.state.end_date))}
-                                minimumDate={new Date(1990, 1, 1).getTime()}
-                                maximumDate={new Date(2018, 12, 31).getTime()}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Select date"
-                                textStyle={{ color: "green" }}
-                                placeHolderTextStyle={{ color: "#d3d3d3" }}
-                                onDateChange={(val) => this.setState({end_date: val})}
-                                style={styles.form}
-                                />
-                        </Item>
-
                         <Item style={{height: 70}}>
                             <Icon name='md-time' />
-                            <Text style={styles.lectureTxt}>From</Text>
-                            <View style={styles.time}>
-                                <TimePicker
-                                start_duration={this.start_duration}
-                                selectedMinutes={this.selectedMinutes}
-                                onChange={(hours, minutes) => this.setState({ start_duration: hours, selectedMinutes: minutes })}
-                            />
+                            <Text style={styles.lectureTxt}>From </Text>
+                            <View>
+                                <TouchableOpacity onPress={this._showStartTimePicker}>
+                                    <Text>{this.state.start_duration}</Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    isVisible={this.state.isStartTimeVisible}
+                                    onConfirm={this._handleStartTimePicked}
+                                    onCancel={this._hideStartTimePicker}
+                                    mode={'datetime'}
+                                    is24Hour={false}
+                                />
                           </View>
                           <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
-                            <View style={styles.time}>
-                                <TimePicker
-                                end_duration={this.end_duration}
-                                selectedMinutes={this.selectedMinutes}
-                                onChange={(hours, minutes) => this.setState({ end_duration: hours, selectedMinutes: minutes })}
-                            />
+                            <View>
+                                <TouchableOpacity onPress={this._showEndTimePicker}>
+                                    <Text>{this.state.end_duration}</Text>
+                                </TouchableOpacity>
+                                <DateTimePicker
+                                    isVisible={this.state.isEndTimeVisible}
+                                    onConfirm={this._handleEndTimePicked}
+                                    onCancel={this._hideEndTimePicker}
+                                    mode={'datetime'}
+                                    is24Hour={false}
+                                />
                           </View>
                         </Item>
 
@@ -312,6 +340,7 @@ export default class AddLecture extends Component {
                                     keyboardType='numeric'
                                     placeholder="ex:20 $..."
                                     placeholderTextColor="#ccc5c5"
+                                    value={`${this.state.price}`}
                             />
                         </Item>
 
@@ -380,18 +409,6 @@ export default class AddLecture extends Component {
                             />
                         </Item>
 
-                        <View style={styles.put}>
-                            <TextInput 
-                                style={styles.textinput}
-                                onChangeText={this.searchedAdresses}
-                                placeholder="Type your adress here" />
-                            <ListView
-                                dataSource={this.ds.cloneWithRows(this.state.searchedAdresses)}
-                                renderRow={this.renderAdress} 
-                                enableEmptySections={true}
-                            />
-                        </View>
-
                         {/* <Item style={{height: 120}}>
                             <Icon type="Feather" name='user-plus' />
                             <Text style={styles.font}>Add Student </Text>
@@ -409,29 +426,38 @@ export default class AddLecture extends Component {
                             />
                             </View>
                         </Item> */}
-
-                    <MultiSelect
-                        hideTags
-                        items={this.state.searchedUsers}
-                        uniqueKey="id"
-                        ref={(component) => { this.multiSelect = component }}
-                        onSelectedItemsChange={this.onSelectedItemsChange}
-                        selectedItems={this.state.tableData}
-                        selectText="Pick Items"
-                        searchInputPlaceholderText="Search Items..."
-                        onChangeInput={ (text)=> console.log(text)}
-                        altFontFamily="ProximaNova-Light"
-                        tagRemoveIconColor="#CCC"
-                        tagBorderColor="#CCC"
-                        tagTextColor="#CCC"
-                        selectedItemTextColor="#CCC"
-                        selectedItemIconColor="#CCC"
-                        itemTextColor="#000"
-                        displayKey="name"
-                        searchInputStyle={{ color: '#CCC' }}
-                        submitButtonColor="#CCC"
-                        submitButtonText="Submit"
-                    />
+                        {
+                            this.state.searchedUsers.map((abc, index)=>{
+                                // this.state.namePhone = abc.name + abc.phone
+                                this.setState({
+                                    namePhone: abc.name + abc.phone
+                                })
+                               return <Text>{this.state.namePhone}</Text>
+                            })
+                        }
+                            <MultiSelect
+                                hideTags
+                                items={this.state.searchedUsers}
+                                uniqueKey="id"
+                                ref={(component) => { this.multiSelect = component }}
+                                onSelectedItemsChange={this.onSelectedItemsChange}
+                                selectedItems={this.state.tableData}
+                                selectText="Add students"
+                                searchInputPlaceholderText="Search students..."
+                                onChangeInput={ (text)=> console.log(text)}
+                                altFontFamily="ProximaNova-Light"
+                                tagRemoveIconColor="#CCC"
+                                tagBorderColor="#CCC"
+                                tagTextColor="#CCC"
+                                selectedItemTextColor="#CCC"
+                                selectedItemIconColor="#CCC"
+                                itemTextColor="#000"
+                                displayKey="name"
+                                searchInputStyle={{ color: '#CCC' }}
+                                submitButtonColor="#CCC"
+                                submitButtonText="Submit"
+                                styles={{backgroundColor: 'red'}}
+                            />
                                
                         <Item style={{height: 70, borderColor: "transparent", paddingBottom: 0, marginBottom: 0}} underline={false}>
                             <Icon type="MaterialIcons" name='description' />
@@ -464,27 +490,6 @@ export default class AddLecture extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 18,
-        padding: 10,
-        textAlign: 'center'
-      },
-    put: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-      },
-      textinput: {
-        marginTop: 30,
-        backgroundColor: '#DDDDDD',
-        height: 40,
-        width: 200
-      },
-    all:{
-        padding:20,
-        backgroundColor: '#f1f1f1',
-    },
     container:{
         backgroundColor: '#fff',
         flex: 1,
@@ -528,7 +533,4 @@ const styles = StyleSheet.create({
     font:{
         fontFamily: "Pangolin-Regular",
     },
-    time: {
-        width: 100
-      },
 });

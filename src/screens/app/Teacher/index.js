@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, AsyncStorage, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, AsyncStorage, FlatList, ActivityIndicator } from 'react-native';
 import { Icon, Item, H3, Toast } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
@@ -40,15 +40,15 @@ class Teacher extends Component {
 
     render() {
         return (
-            <AppTemplate fab navigation={this.props.navigation}>
+            <AppTemplate fab navigation={this.props.navigation} title="Home">
             
                 <Item style={styles.itemRobot}>
                     <View style={styles.viewImageRobot}>
                         <Image source={require('../../../images/cute-smiling-robot.png')} style={styles.imageRobot}/>
                     </View>
                     <View>
-                        <H3 style={styles.txt}>Hello, {this.props.user.name}</H3>
-                        <H3 style={styles.txt}>Welcome back!</H3>
+                        <H3 style={styles.txtTitle}>Hello, {this.props.user.name}</H3>
+                        <H3 style={styles.txtTitle}>Welcome back!</H3>
                     </View>
                 </Item>
             {
@@ -65,21 +65,17 @@ class Teacher extends Component {
                         }
                         data={this.state.showLectures}
                         renderItem={({item}) => (
-                        <View>
-        
+                        
                             <Item style={styles.item} onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
                                 <View style={styles.viewImage}>
                                     <Image source={require('../../../images/idea.png')} style={styles.image}/>
                                 </View>
                                 <View>
-                                    <Text style={styles.txt}>{item.title}</Text>
-                                    <Text style={styles.txt}>{item.subject}</Text>
-                                    <Text style={styles.txt}>Date: 20/11/2018</Text>
-                                    <Text style={styles.txt}>Due date: 20/11/2018</Text>
+                                    <Text style={styles.txt}>Title: {item.title}</Text>
+                                    <Text style={styles.txt}>Subject: {item.subject}</Text>
+                                    <Text style={styles.txt}>Date: {item.start_duration}</Text>
                                 </View>
                             </Item>
-                            
-                        </View>
                     )}
                     keyExtractor = { (item, index) => index.toString() }
                     />
@@ -113,10 +109,12 @@ const styles = StyleSheet.create({
         borderColor: 'transparent' 
     },
     item:{
-        padding: 10,
+        paddingHorizontal: 5,
+        paddingVertical: 15
     },
     title:{
         fontFamily: "Pangolin-Regular",
+        paddingVertical:10
     },
     viewImageRobot:{
         paddingRight: 15
@@ -136,6 +134,10 @@ const styles = StyleSheet.create({
     txt:{
         fontFamily: "Pangolin-Regular",
     },
+    txtTitle:{
+        fontFamily: "Pangolin-Regular",
+        padding: 10
+    }
 
 });
 

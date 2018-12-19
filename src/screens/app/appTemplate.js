@@ -4,8 +4,45 @@ import Color from '../../constants/colors';
 import {RefreshControl, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator,Text,Platform, Image} from "react-native";
 import {connect} from "react-redux";
 import { setUser } from "../../reducers";
+import axios from "axios/index";
+import Server from "../../constants/config";
 
 class AppTemplate extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: false,
+        }
+    }
+
+    _onRefresh(){
+        this.setState({
+            refreshing: true
+        });
+        if(this.props.refreshing){
+            this.props.onLoad().then(() => {
+                this.setState({
+                    refreshing: false
+                });
+            })
+        }else{
+            AsyncStorage.getItem('token').then(userToken => {
+                return axios.post(Server.url+'api/auth/me?token='+userToken).then(response => {
+                    this.props.setUser(response.data.user);
+                }).catch(error => {
+                    Toast.show({
+                        text: 'Error reaching the server.',
+                        type: "danger",
+                        buttonText: 'Okay'
+                    });
+                })
+            }).then(() => {
+                this.setState({
+                    refreshing: false
+                });
+            });
+        }
+    }
 
     render() {
         return (
@@ -14,28 +51,40 @@ class AppTemplate extends Component {
                         style={{ backgroundColor: Color.mainColor }}
                         androidStatusBarColor={Color.mainColor}>
                     <Left>
-                        <Button transparent onPress={ () =>  this.props.navigation.openDrawer() } >
-                            <Icon name='menu' />
-                        </Button>
+                        {
+                            (this.props.back) ? (
+                                <Button transparent onPress={ () =>  this.props.navigation.goBack() } >
+                                    <Icon name='arrow-back' />
+                                </Button>
+
+                            ):(
+                                <Button transparent onPress={ () =>  this.props.navigation.openDrawer() } >
+                                    <Icon name='menu' />
+                                </Button>
+                            )
+                        }
                     </Left>
 
                     <Body>
-                        <Title>GSI</Title>
+                        <Title>{this.props.title}</Title>
                     </Body>
 
                     <Right>
 
                     <TouchableOpacity>
-                        <Icon style={styles.butt} name='md-search' />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Icon style={styles.butt} name='md-cart' />
+                        <Icon style={styles.butt} name='md-search' onPress={ () => this.props.navigation.navigate('Search')}/>
                     </TouchableOpacity>
 
                     </Right>
                 </Header>
-
+                {/* <Content style={styles.content}
+                    refreshing={this.state.refreshing}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this._onRefresh()}
+                        />
+                    }> */}
                 <Content style={styles.content}>
                     { this.props.children }
                 </Content>
@@ -47,7 +96,7 @@ class AppTemplate extends Component {
                             position="bottomRight"
                             onPress={() => this.props.navigation.navigate('AddLecture')}>
     
-                            <Icon size={25} type="Ionicons" name="ios-add-outline" style={{color:'#FFFFFF'}}  />
+                            <Icon size={25} type="FontAwesome" name="edit" style={{color:'#FFFFFF'}}  />
                         </Fab>
                     )
                 }
@@ -68,7 +117,7 @@ const styles = StyleSheet.create({
     },
     content:{
         backgroundColor: Color.background,
-        padding:7
+        padding:7,
     }
 
 });

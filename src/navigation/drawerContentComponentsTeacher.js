@@ -6,7 +6,7 @@ import { white } from 'ansi-colors';
 import {setUser} from "../../src/reducers";
 import {connect} from "react-redux"
 
-class drawerContentComponents extends Component {
+class drawerContentComponentsTeacher extends Component {
 
     navigateToScreen = ( route ) =>(
         () => {
@@ -30,26 +30,25 @@ class drawerContentComponents extends Component {
                     <Image source={require('../images/background.jpg')} 
                         style={{width: 45, height: 45, borderRadius: 30, position: 'absolute', right: 20 }} />
                     <Text style={styles.headerText}>{this.props.user.name}</Text>
-                    <Text style={styles.headerText}>Student</Text>
-                    <Text style={styles.headerText}>1000 KWD</Text>
+                    <Text style={styles.headerText}>Teacher</Text>
                 </View>
             </View>
             <View style={styles.screenContainer}>
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Home')}>
+                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Teacher')}>
                     <Image source={require('../images/home.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Home</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Register')}>
-                    <Image source={require('../images/user-icon.png')} style={{width: 25, height: 25, marginRight: 20}} />
-                    <Text>Register</Text>
-                    <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
+                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Wallet')}>
+                    <Image source={require('../images/wallet.png')} style={{width: 25, height: 25, marginRight: 20}} />
+                    <Text>Wallet</Text>
+                    <Icon Wallet = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Reports')}>
-                    <Image source={require('../images/reports.png')} style={{width: 25, height: 25, marginRight: 20}} />
-                    <Text>Reports</Text>
+                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Payment')}>
+                    <Image source={require('../images/payment.png')} style={{width: 25, height: 25, marginRight: 20}} />
+                    <Text>Payments</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
 
@@ -106,4 +105,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(drawerContentComponents);
+)(drawerContentComponentsTeacher);

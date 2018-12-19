@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, FlatList, AsyncStorage, Alert, } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, AsyncStorage, Alert, ActivityIndicator } from 'react-native';
 import { Icon, Form, Item, Picker, DatePicker, Button, Label, List, ListItem, Left, Body, 
     Right, Thumbnail, Card, CardItem, Toast} from 'native-base';
 import Color from '../../../constants/colors';
@@ -8,6 +8,8 @@ import axios from "axios";
 import Server from "../../../constants/config";
 import {setUser} from "../../../reducers";
 import {connect} from "react-redux";
+import moment from 'moment'
+import _ from 'lodash'
 
 class Lectures extends Component {
     constructor(props) {
@@ -17,6 +19,8 @@ class Lectures extends Component {
             lecture: this.props.navigation.state.params ,
             isLoading: false,
             isSetting: false,
+            isApplying: false,
+            editable: 1
 
         };
         this.setDate = this.setDate.bind(this);
@@ -89,42 +93,108 @@ class Lectures extends Component {
             { cancelable: false }
         )
     }
+
+    componentDidMount(){
+        formated_date = this.state.lecture.start_duration.replace('-','/').replace('-','/')
+        date = new Date(formated_date);
+       if( Math.abs(moment().diff(moment( date.getTime()), 'hours', true)) <= 5){
+           this.setState({editable:0});
+       }
+    }
+
+    applyLecture(id){
+        Alert.alert(
+            "Are you sure",
+            "You want to apply this lecture?",
+            [
+                {text: "Cancel", onPress: () => console.log('Cancel Pressed')},
+                {text: "Ok", onPress: () => {
+                    this.setState({
+                        isApplying: true,
+                    });
+                    AsyncStorage.getItem('token').then(userToken => {
+                        return axios.post(Server.url + 'api/jointLecture/' + id + '?token=' + userToken)
+                        .then(response => {
+                            Toast.show({
+                                text: 'Successfully applying',
+                                type: "success",
+                                buttonText: 'Okay'
+                            });
+                            this.setState({
+                                isApplying: false,
+                            })
+                        }).catch(error => {
+                            this.setState({
+                                isApplying: false,
+                            });
+                            Toast.show({
+                                text: "Error reaching the server.",
+                                buttonText: "Ok",
+                                type: "danger"
+                            })
+                        })
+                    });
+                    }},
+            ],
+            { cancelable: false }
+        )
+
+    }
     
     render() {
+        var timeStart = new Date("01/01/2007 " + this.state.lecture.start_duration).getHours()
         return (
-            <AppTemplate>
-                
-                <Button onPress={() => this.setState({isSetting: !this.state.isSetting})} style={{width: "100%", alignItems: "center"}} dark><Text style={{flex: 1, color: '#fff'}}> Settings </Text>
-                <Icon name={this.state.isSetting? "ios-arrow-dropup-circle": "ios-arrow-dropdown-circle"} style={{color: "#FFFFFF", fontSize: 25}}/>
-                </Button>
+            <AppTemplate title = {this.state.lecture.title} back navigation={this.props.navigation}>
 
                 {
-                    (this.state.isSetting) && (
-                        
-                            (this.props.user.type == 1) ? (
-                                <List style={{backgroundColor: "#000", right: 0}}>
-                                    <ListItem
-                                        
-                                    >
-                                        <Text style={{flex: 1, color: '#fff'}}>Applying</Text>
-                                    </ListItem> 
-                                </List>
+                    (this.props.user.type == 1) ? (
+                        _.find(this.props.user.joint_lectures, lecture => lecture.id == this.state.lecture.id) ? (
+                            <Text></Text>
+                        ):(
+                            <Button
+                            onPress={() => this.applyLecture(this.state.lecture.id)}
+                            style={{width: "100%", alignItems: "center", backgroundColor: '#d3d3ea'}}>
+    
+                            <Text style={{flex: 1, paddingLeft: 10}}> Apply </Text>
+                            {this.state.isApplying && (
+                                <ActivityIndicator size="small" color="#000000" />
+                            )}
+    
+                            <Icon name="ios-checkmark" style={{color: Color.mainColor, fontSize: 30}}/>
+    
+                            </Button>
 
-                            ):(
-                                <List style={{backgroundColor: "#000", right: 0}}>
-                                    <ListItem
-                                        onPress={() => this.props.navigation.navigate("EditLecture", {...this.state.lecture})}
-                                    >
-                                        <Text style={{flex: 1, color: '#fff'}}>Edit Course</Text>
-                                    </ListItem>
-                                    
-                                    <ListItem
-                                        onPress={() => this.deleteLecture()}
-                                    >
-                                        <Text style={{flex: 1, color: '#fff'}}>Delete Course</Text>
-                                    </ListItem>
-                                </List>
-                            )  
+                        )
+
+                    ):(
+                            <View>
+                            <Button onPress={() => this.setState({isSetting: !this.state.isSetting})} style={{width: "100%", alignItems: "center"}} dark><Text style={{flex: 1, color: '#fff'}}> Settings </Text>
+                            <Icon name={this.state.isSetting? "ios-arrow-dropup-circle": "ios-arrow-dropdown-circle"} style={{color: "#FFFFFF", fontSize: 25}}/>
+                            </Button>
+                            { 
+                                (this.state.isSetting) && (
+                                    <List style={{backgroundColor: "#000", right: 0}}>
+                                        {
+                                            (this.state.editable == 1) ? (
+                                                <ListItem
+                                                    onPress={() => this.props.navigation.navigate("EditLecture", {...this.state.lecture})}
+                                                >
+                                                    <Text style={{flex: 1, color: '#fff'}}>Edit Lecture</Text>
+                                                </ListItem>
+
+                                            ):null
+                                            
+                                        }
+                                        
+                                        <ListItem
+                                            onPress={() => this.deleteLecture()}
+                                        >
+                                            <Text style={{flex: 1, color: '#fff'}}>Delete Lecture</Text>
+                                        </ListItem>
+                                    </List>
+                                )
+                            }
+                            </View>   
                     )
                 }
                     <View style={styles.Box}>
@@ -159,40 +229,75 @@ class Lectures extends Component {
                         <Item style={styles.item2}>
                             <Icon type="Entypo" name="wallet" />
                             <Text style={styles.lectureTxt}>Payment</Text>
-                            <Text style={styles.right}>Before attending</Text>
-                            
-                        </Item>
-                        <Item style={styles.item2}>
-                            <Icon type="Foundation" name="results" />
-                            <Text style={styles.lectureTxt}>Course Type</Text>
-                            <Text style={styles.right}>{this.state.lecture.type_course}</Text>
-                            
-                        </Item>
-                        <Item style={styles.item2}>
-                            <Icon type="FontAwesome" name="transgender" />
-                            <Text style={styles.lectureTxt}>Gender</Text>
-                            <Text style={styles.right}>Male</Text>
-                            
-                        </Item>
-                        <Item style={styles.item2}>
-                            <Icon type="Entypo" name="back-in-time" />
-                            <Text style={styles.lectureTxt}>Duration</Text>
-                            <Text style={styles.right}>{this.state.lecture.start_duration} To {this.state.lecture.end_duration}</Text>
-                            
-                        </Item>
-                        <Item style={styles.item2}>
-                            <Icon type="FontAwesome" name="users" />
-                            <Text style={styles.lectureTxt}>Attendance</Text>
-                            <Text style={styles.right}>{this.state.lecture.attendance}</Text>
-                            
-                        </Item>
-                        <Item style={styles.item2}>
-                            <Icon type="FontAwesome" name="check-square-o" />
-                            <Text style={styles.lectureTxt}>Allowed</Text>
-                            <Text style={styles.right}>{this.state.lecture.allowed}</Text>
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
+                            Before attending
+                            </Text>
                             
                         </Item>
 
+                        <Item style={styles.item2}>
+                            <Icon type="Foundation" name="results" />
+                            <Text style={styles.lectureTxt}>Course Type</Text>
+                            <View style={{justifyContent: 'space-between',  alignItems: 'flex-end'}}>
+                            {
+                                (this.state.lecture.type_course == 1) ? (
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Pangolin-Regular",}}>
+                                        College
+                                    </Text>
+
+                                ):(
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Pangolin-Regular",}}>
+                                        Genral
+                                    </Text>
+                                )
+                            }
+                            </View>
+                        </Item>
+
+                        <Item style={styles.item2}>
+                            <Icon type="FontAwesome" name="transgender" />
+                            <Text style={styles.lectureTxt}>Gender</Text>
+                            {
+                                (this.state.lecture.gender == 1) ? (
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                        Male
+                                    </Text>
+
+                                ):(this.state.lecture.gender == 2)?(
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                        Female
+                                    </Text>
+                                ):(
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                        Both
+                                    </Text>
+                                )
+                            }
+                        </Item>
+
+                        <Item style={styles.item2}>
+                            <Icon type="Entypo" name="back-in-time" />
+                            <Text style={styles.lectureTxt}>Duration</Text>
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
+                            {this.state.lecture.start_duration} To {this.state.lecture.end_duration}
+                            </Text>                            
+                        </Item>
+
+                        <Item style={styles.item2}>
+                            <Icon type="FontAwesome" name="users" />
+                            <Text style={styles.lectureTxt}>Attendance</Text>
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
+                            {this.state.lecture.length}
+                            </Text>
+                        </Item>
+
+                        <Item style={styles.item2}>
+                            <Icon type="FontAwesome" name="check-square-o" />
+                            <Text style={styles.lectureTxt}>Allowed</Text>
+                            <Text style={{position: 'absolute',left: 250,fontFamily: "Pangolin-Regular",}}>
+                            {this.state.lecture.allowed}
+                            </Text>
+                        </Item>
 
                     </View>
 
@@ -244,8 +349,8 @@ const styles = StyleSheet.create({
         height: 120,
     },
     item2:{
-        paddingTop: 20,
-        paddingBottom: 20
+        height: 70, 
+        flex: 1
     },
     image:{
         width:80, 
@@ -280,12 +385,9 @@ const styles = StyleSheet.create({
         fontFamily: "Pangolin-Regular",
     },
     price:{
-        marginLeft: 110
-    },
-    right:{
         position: 'absolute',
         left: 200,
-        fontFamily: "Pangolin-Regular",
+        top: 15
     },
     priceText:{
         backgroundColor:'#fff',
@@ -303,6 +405,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:5,
         paddingLeft: 20,
         paddingRight: 20,
+        padding: 1
     },
     commentTxt:{
         fontSize: 22,
@@ -318,7 +421,7 @@ const mapStateToProps = ({ user }) => ({
 });
 
 const mapDispatchToProps = {
-    setUser
+    setUser,
 };
 export default connect(
     mapStateToProps,

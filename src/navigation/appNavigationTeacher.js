@@ -1,32 +1,22 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, Dimensions, Image } from 'react-native';
 import {Icon, Text} from "native-base";
-import MyHomeScreen from "../screens/app/Home";
 import Lectures from "../screens/app/Lectures";
 import AddLecture from "../screens/app/Lectures/AddLecture";
 import EditLecture from "../screens/app/Lectures/EditLecture";
 import LecturePayment from "../screens/app/Teacher/LecturePayment";
-import Notifications from "../screens/app/Notifications";
-import Search from "../screens/app/Search";
-import ResultSearch from "../screens/app/Search/ResultSearch";
-import CalendarSearch from "../screens/app/Search/CalendarSearch";
-import Students from "../screens/app/Students";
 import Teacher from "../screens/app/Teacher";
 import Payments from "../screens/app/Teacher/Payments";
 import Wallet from "../screens/app/Teacher/Wallet";
 import Color from "../constants/colors";
-import DrawerStack from "./DrawerNavigator"
+import Search from "../screens/app/Search";
 import { createMaterialTopTabNavigator, createStackNavigator, DrawerNavigator } from 'react-navigation'
 
-const HomeStack = createStackNavigator({
+const TeacherStack = createStackNavigator({
     Teacher,
     AddLecture,
     EditLecture,
     Lectures,
-    LecturePayment,
-    Search,
-    ResultSearch,
-    CalendarSearch,
 },{
     headerMode: 'none',
 });
@@ -35,10 +25,12 @@ const WalletStack = createStackNavigator({
     Wallet,
 },{
     headerMode: 'none',
+    
 });
 
 const PaymentsStack = createStackNavigator({
     Payments,
+    LecturePayment,
 },{
     headerMode: 'none',
 });
@@ -51,7 +43,7 @@ const SettingsStack = createStackNavigator({
 
 const AppStackTeacher = createMaterialTopTabNavigator (
     {
-        HomeStack,
+        TeacherStack,
         WalletStack,
         PaymentsStack,
         SettingsStack
@@ -61,7 +53,7 @@ const AppStackTeacher = createMaterialTopTabNavigator (
             tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === 'HomeStack') {
+                if (routeName === 'TeacherStack') {
                     return <Icon name='home' style={{color: tintColor, fontSize: 26}} type="FontAwesome" />
                 } else if (routeName === 'WalletStack') {
                     return <Icon name='wallet' style={{color: tintColor, fontSize: 26}} type="Entypo" />
@@ -73,22 +65,42 @@ const AppStackTeacher = createMaterialTopTabNavigator (
                     return <Icon name='settings' style={{color: tintColor, fontSize: 26}} type="MaterialIcons" />
                 }
             },
+            tabBarLabel: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                switch (routeName) {
+                  case 'TeacherStack':
+                    return <Text style={{color: tintColor, fontSize: 14}}>Home</Text>;
+                    break;
+                  case 'WalletStack':
+                    return <Text style={{color: tintColor, fontSize: 14}}>Wallet</Text>;
+                    break;
+                  case 'PaymentsStack':
+                      return <Text style={{color: tintColor, fontSize: 14}}>Payment</Text>;
+                      break;
+                  case 'SettingsStack':
+                    return <Text style={{color: tintColor, fontSize: 14}}>Settings</Text>;
+                    break;
+        
+        
+                }
+            } 
+
         }),
         tabBarPosition: 'bottom',
         animationEnabled: false,
         swipeEnabled: false,
 
         tabBarOptions: {
-            showLabel: false,
+            showLabel: true,
             showIcon: true,
-            activeTintColor: Color.mainColor,
-            inactiveTintColor: 'black',
+            activeTintColor: '#000',
+            inactiveTintColor: '#fff',
             tabStyle: {
                 flex:1,
                 width: '100%',
             },
             style: {
-                backgroundColor: 'white',
+                backgroundColor: Color.mainColor,
             },
             indicatorStyle: {
                 backgroundColor: Color.mainColor,
@@ -96,7 +108,7 @@ const AppStackTeacher = createMaterialTopTabNavigator (
             }
         },
 
-        initialRouteName: 'HomeStack',
+        initialRouteName: 'TeacherStack',
     }
 );
 

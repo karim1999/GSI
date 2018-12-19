@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, FlatList } from 'react-native';
-import {H1, H3, Icon} from 'native-base';
+import {H1, H3, Icon,Toast} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import Server from "../../../constants/config";
