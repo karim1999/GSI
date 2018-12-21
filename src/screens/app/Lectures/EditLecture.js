@@ -24,6 +24,7 @@ import _ from 'lodash'
 import MultiSelect from 'react-native-multiple-select';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment'
+import Color from '../../../constants/colors';
 
 export default class EditLecture extends Component {
     constructor(props) {
@@ -55,14 +56,14 @@ export default class EditLecture extends Component {
     _handleStartTimePicked = (date) => {
         this.setState({
             isStartTimeVisible: false,
-            start_duration: moment(date).format(' h:mm a')
+            start_duration: moment(date).format('YYYY-MM-DD h:mm a')
         })
     };
 
     _handleEndTimePicked = (date) => {
         this.setState({
             isEndTimeVisible: false,
-            end_duration: moment(date).format(' h:mm a')
+            end_duration: moment(date).format('YYYY-MM-DD h:mm a')
         })
     };
     //End timePicker
@@ -125,11 +126,12 @@ export default class EditLecture extends Component {
                     isLoading: false,
                 });
                 Toast.show({
-                    text: "A lecture was added successfully",
+                    text: "A lecture was edited successfully",
                     buttonText: "Ok",
                     type: "success"
                 });
                 this.props.navigation.navigate("CourseView");
+                this.props.setUser(response.data);
             }).catch(error => {
                 alert(JSON.stringify(data))
                 alert(id)
@@ -155,12 +157,13 @@ export default class EditLecture extends Component {
         // var timeStart = new Date("01/01/2007 " + this.state.start_duration).getHours()
 
         // var date = new Date().getHours();
-        formated_date = this.state.start_duration.replace('-','/').replace('-','/')
-        alert(formated_date)
-        date = new Date(formated_date);
         
-        var x = Math.abs(moment().diff(moment( date.getTime()), 'hours', true))
-        alert('x = '+x)
+        // formated_date = this.state.start_duration.replace('-','/').replace('-','/')
+        // alert(formated_date)
+        // date = new Date(formated_date);
+        
+        // var x = Math.abs(moment().diff(moment( date.getTime()), 'hours', true))
+        // alert(date);
         
         
         // if((timeStart-5) < 0){
@@ -182,6 +185,7 @@ export default class EditLecture extends Component {
         const data = this.state;
         return (
             <AppTemplate title = {"Edit " + this.state.title} back navigation={this.props.navigation}>
+                <View style={styles.content}>
                     <Form style={styles.container}>
 
                         <Item style={{height: 70}}>
@@ -191,6 +195,7 @@ export default class EditLecture extends Component {
                                    placeholder="ex: Quantum mechanics..."
                                    placeholderTextColor="#ccc5c5"
                                    value={this.state.title}
+                                   style={{color: '#9e9797', paddingLeft: 45}}
                             />
                         </Item>
 
@@ -201,34 +206,35 @@ export default class EditLecture extends Component {
                                    placeholder="ex: Physics..."
                                    placeholderTextColor="#ccc5c5"
                                    value={this.state.subject}
+                                   style={{color: '#9e9797', paddingLeft: 25}}
                             />
                         </Item>
 
-                        <Item style={{height: 70}}>
-                            <Icon name='md-time' />
-                            <Text style={styles.lectureTxt}>From </Text>
-                            <View>
+                        <Item style={{height: 90}}>
+                            <Icon style={{paddingBottom: 20, paddingTop: 10}} name='md-time' />
+                            <Text style={{paddingBottom: 20, paddingTop: 10}}>From </Text>
+                            <View style={{paddingBottom: 20, paddingTop: 10}}>
                                 <TouchableOpacity onPress={this._showStartTimePicker}>
-                                    <Text>{this.state.start_duration}</Text>
+                                    <Text style={{color: '#9e9797', paddingLeft: 45}}>{this.state.start_duration}</Text>
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     isVisible={this.state.isStartTimeVisible}
                                     onConfirm={this._handleStartTimePicked}
                                     onCancel={this._hideStartTimePicker}
-                                    mode={'time'}
+                                    mode={'datetime'}
                                     is24Hour={false}
                                 />
                           </View>
-                          <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
-                            <View>
+                            <Text style={{ position:'absolute', left: 30, paddingTop:45}}>To</Text>
+                            <View style={{position:'absolute', left: 70, paddingTop:45}}>
                                 <TouchableOpacity onPress={this._showEndTimePicker}>
-                                    <Text>{this.state.end_duration}</Text>
+                                    <Text style={{color: '#9e9797', paddingLeft: 45}}>{this.state.end_duration}</Text>
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     isVisible={this.state.isEndTimeVisible}
                                     onConfirm={this._handleEndTimePicked}
                                     onCancel={this._hideEndTimePicker}
-                                    mode={'time'}
+                                    mode={'datetime'}
                                     is24Hour={false}
                                 />
                           </View>
@@ -236,18 +242,19 @@ export default class EditLecture extends Component {
 
                         <Item style={{height: 70}}>
                             <Icon type="FontAwesome" name='dollar' />
-                            <Label style={styles.font}>Price </Label>
+                            <Text style={styles.font}>Price </Text>
                             <Input onChangeText={(price) => this.setState({price})}
                                     keyboardType='numeric'
                                     placeholder="ex:20 $..."
                                     placeholderTextColor="#ccc5c5"
                                     value={`${this.state.price}`}
+                                    style={{color: '#9e9797', paddingLeft: 55}}
                             />
                         </Item>
 
                         <Item style={{height: 70}}>
                             <Icon name='md-images' />
-                            <Label style={styles.font}>Image </Label>
+                            <Text style={styles.font}>Image </Text>
                             <Button
                                 style={{alignSelf: "center"}}
                                 onPress={() => this.selectImage()} light>
@@ -266,11 +273,11 @@ export default class EditLecture extends Component {
                             <Text style={styles.font}>Course Type </Text>
 
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.font}> College </Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}> College </Text>
                                 <Radio style={{paddingRight: 20, paddingLeft: 8}} selected={this.state.type_course === 1}
                                     onPress={(type_course) => {this.setState({type_course: 1})}}/>
 
-                                <Text style={styles.font}>Genral</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Genral</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.type_course === 2}
                                     onPress={(type_course) => {this.setState({type_course: 2})}}/>  
                             </View>
@@ -283,17 +290,17 @@ export default class EditLecture extends Component {
 
                             <View style={{flexDirection: 'row',  paddingLeft: 10}}>
                                 <Icon type="FontAwesome" name='male' />
-                                <Text style={styles.font}>Male</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Male</Text>
                                 <Radio style={{paddingRight: 5, paddingLeft: 8}} selected={this.state.gender === 1}
                                     onPress={(gender) => {this.setState({gender: 1})}}/>
 
                                 <Icon type="FontAwesome" name='female' />
-                                <Text style={styles.font}>Female</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Female</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 2}
                                     onPress={(gender) => {this.setState({gender: 2})}}/>
                                 
                                 <Icon type="FontAwesome" name='transgender-alt' />
-                                <Text style={styles.font}>Both</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Both</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 3}
                                     onPress={(gender) => {this.setState({gender: 3})}}/>
                             </View>
@@ -308,6 +315,7 @@ export default class EditLecture extends Component {
                                     placeholder="ex:150 student..."
                                     placeholderTextColor="#ccc5c5"
                                     value={`${this.state.allowed}`}
+                                    style={{color: '#9e9797'}}
                             />
                         </Item>
 
@@ -329,15 +337,17 @@ export default class EditLecture extends Component {
                         </Item>
                         <Button
                             onPress={() => this.EditLecture(this.state.id)}
-                            style={{flexDirection: "row", backgroundColor: '#fdeed1'}}
-                            block light
+                            style={{flexDirection: "row", backgroundColor: '#d3d3ea'}}
+                            block
                         >
-                            <Text style={styles.font}>Edit Lecture</Text>
+                            <Text style={{fontFamily: "Pangolin-Regular", color: '#000'}}>Edit</Text>
                             {this.state.isLoading && (
                                 <ActivityIndicator size="small" color="#000000" />
                             )}
+                            <Icon type="Entypo" name="edit" style={{color: Color.mainColor, fontSize: 18}}/>
                         </Button>
                     </Form>
+                </View>
             </AppTemplate>
         );
     }
@@ -350,8 +360,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     content:{
-        flexDirection: 'row',
-        marginBottom:25,
+        backgroundColor: Color.background,
+        padding:7,
     },
     contentDescription:{
     },

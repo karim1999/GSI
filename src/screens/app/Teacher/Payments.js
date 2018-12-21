@@ -39,6 +39,7 @@ export default class Payments extends Component {
     render() {
         return (
             <AppTemplate title="Payment">
+                <View style={styles.content}>
                 {
                     (this.state.isLoading)? (
                         <View>
@@ -107,13 +108,17 @@ export default class Payments extends Component {
                         />
                     )
                 }
-
+                </View>
             </AppTemplate>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+    },
     Box: {
         height: 200, 
         backgroundColor: '#fff',

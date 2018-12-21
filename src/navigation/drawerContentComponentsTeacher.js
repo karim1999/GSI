@@ -43,10 +43,10 @@ class drawerContentComponentsTeacher extends Component {
                 <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Wallet')}>
                     <Image source={require('../images/wallet.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Wallet</Text>
-                    <Icon Wallet = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
+                    <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Payment')}>
+                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Payments')}>
                     <Image source={require('../images/payment.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Payments</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />

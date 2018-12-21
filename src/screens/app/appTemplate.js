@@ -77,15 +77,15 @@ class AppTemplate extends Component {
 
                     </Right>
                 </Header>
-                {/* <Content style={styles.content}
+                {/* <Content style={styles.content}> */}
+                <Content 
                     refreshing={this.state.refreshing}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={() => this._onRefresh()}
                         />
-                    }> */}
-                <Content style={styles.content}>
+                    }>
                     { this.props.children }
                 </Content>
                 {

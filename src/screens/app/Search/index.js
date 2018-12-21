@@ -7,6 +7,8 @@ import axios from "axios";
 import Server from "../../../constants/config";
 import _ from 'lodash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment'
+
 export default class Search extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,7 @@ export default class Search extends Component {
             isEndTimeVisible: false,
             start_duration: " Start Time",
             end_duration: " End Time",
+            searchLectures: []
          };;
       }
 
@@ -68,18 +71,30 @@ export default class Search extends Component {
           let data = [];
           data = this.state.showLectures;
           
-          if(this.state.title !== ""){
-              data = await _.filter(data, lecture => lecture.title.toLowerCase().indexOf(this.state.title) > -1);
+          if(this.state.title != ""){
+              data = await _.filter(data, lecture => lecture.title.toLowerCase().indexOf(this.state.title.toLowerCase()) > -1);
           }
 
-          if(this.state.subject !== ""){
-              data = await _.filter(data, lecture => lecture.subject.toLowerCase().indexOf(this.state.subject) > -1);
+          if(this.state.subject != ""){
+              data = await _.filter(data, lecture => lecture.subject.toLowerCase().indexOf(this.state.subject.toLowerCase()) > -1);
           }
 
-          formated_date = this.state.end_duration.replace('-','/').replace('-','/')
-           x=moment(this.state.start_duration).isBefore(formated_date, 'year');
+        //   if(this.state.teacher !== ""){
+        //     data = await _.filter(data, lecture => lecture.user.name == this.state.teacher);
+        // }
+        // if(this.state.start_duration !== ""){
+        
+            
+        //     data = await _.filter(data, lecture => moment(moment(lecture.start_duration)
+        //     .format('YYYY-MM-DD h:mm a')).isAfter(this.state.start_duration));
+        // }
+        
+
+        this.setState({
+            searchLectures: data
+        })
            
-           
+        alert(JSON.stringify(this.state.searchLectures))
       }
     
     render() {
@@ -143,7 +158,7 @@ export default class Search extends Component {
                         />
                     </Item>
 
-                    <Button style={styles.button} >
+                    <Button style={styles.button} onPress={ ()=> this.Data()}>
                         <Text style={styles.buttonTxt}>Search</Text>
                     </Button>
 

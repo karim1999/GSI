@@ -13,6 +13,7 @@ import {
     Toast,
     ListItem,
     Right, Radio, Left,DatePicker,
+    
 } from 'native-base';
 import AppTemplate from "../appTemplate";
 import ImagePicker from "react-native-image-picker";
@@ -24,6 +25,7 @@ import _ from 'lodash'
 import MultiSelect from 'react-native-multiple-select';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment'
+import Color from '../../../constants/colors';
 
 export default class AddLecture extends Component {
     constructor(props) {
@@ -38,8 +40,8 @@ export default class AddLecture extends Component {
             allowed: "",
             img: "",
             description: "",
-            start_duration: " Start Time",
-            end_duration: " End Time",
+            start_duration: " Start Date & Time",
+            end_duration: " End Date & Time",
             selectedHours: 0,
             selectedMinutes: 0,
             searchedAdresses: [],
@@ -48,7 +50,8 @@ export default class AddLecture extends Component {
             a:[],
             isStartTimeVisible: false,
             isEndTimeVisible: false,
-            namePhone:[]
+            namePhone:[],
+            datas: []
         };
         
         // this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); //autoComplete
@@ -84,16 +87,24 @@ export default class AddLecture extends Component {
 
     //start autoComplete
     componentDidMount(){
-        var a =[];
         return axios.get(Server.url + 'api/addlectureusers')
         .then(response=>{
             this.setState({
-                searchedUsers: response.data
+                searchedUsers: response.data,
+                showData: this.state.searchedUsers
+            })
+            let showData = []
+            showData = _.map(response.data, user => {
+                return {...user, name: user.name + " - " + user.phone.toString().slice(0, 4)+"xxxx"}
+            } )
+            this.setState({
+                datas: showData
             })
         }).catch(error => {
             alert(JSON.stringify(error))
         })
     }
+
     // searchedAdresses = (searchedText) => {
     //     var adresses =  this.state.searchedUsers
         
@@ -281,8 +292,10 @@ export default class AddLecture extends Component {
     
     render() {
         const data = this.state;
+        
         return (
             <AppTemplate title="Add lecture" back navigation={this.props.navigation}>
+                <View style={styles.content}>
                     <Form style={styles.container}>
 
                         <Item style={{height: 70}}>
@@ -291,6 +304,7 @@ export default class AddLecture extends Component {
                             <Input onChangeText={(title) => this.setState({title})}
                                    placeholder="ex: Quantum mechanics..."
                                    placeholderTextColor="#ccc5c5"
+                                   style={{color: '#9e9797', paddingLeft: 45}}
                             />
                         </Item>
 
@@ -300,15 +314,16 @@ export default class AddLecture extends Component {
                             <Input onChangeText={(subject) => this.setState({subject})}
                                    placeholder="ex: Physics..."
                                    placeholderTextColor="#ccc5c5"
+                                   style={{color: '#9e9797', paddingLeft: 25}}
                             />
                         </Item>
 
-                        <Item style={{height: 70}}>
-                            <Icon name='md-time' />
-                            <Text style={styles.lectureTxt}>From </Text>
-                            <View>
+                        <Item style={{height: 90}}>
+                            <Icon style={{paddingBottom: 20, paddingTop: 10}} name='md-time' />
+                            <Text style={{paddingBottom: 20, paddingTop: 10}}>From </Text>
+                            <View style={{paddingBottom: 20, paddingTop: 10}}>
                                 <TouchableOpacity onPress={this._showStartTimePicker}>
-                                    <Text>{this.state.start_duration}</Text>
+                                    <Text style={{color: '#9e9797', paddingLeft: 45}}>{this.state.start_duration}</Text>
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     isVisible={this.state.isStartTimeVisible}
@@ -318,10 +333,10 @@ export default class AddLecture extends Component {
                                     is24Hour={false}
                                 />
                           </View>
-                          <Text style={{paddingLeft:10, paddingRight:10}}>To</Text>
-                            <View>
+                            <Text style={{ position:'absolute', left: 30, paddingTop:45}}>To</Text>
+                            <View style={{position:'absolute', left: 70, paddingTop:45}}>
                                 <TouchableOpacity onPress={this._showEndTimePicker}>
-                                    <Text>{this.state.end_duration}</Text>
+                                    <Text style={{color: '#9e9797', paddingLeft: 45}}>{this.state.end_duration}</Text>
                                 </TouchableOpacity>
                                 <DateTimePicker
                                     isVisible={this.state.isEndTimeVisible}
@@ -341,6 +356,7 @@ export default class AddLecture extends Component {
                                     placeholder="ex:20 $..."
                                     placeholderTextColor="#ccc5c5"
                                     value={`${this.state.price}`}
+                                    style={{color: '#9e9797', paddingLeft: 55}}
                             />
                         </Item>
 
@@ -359,17 +375,17 @@ export default class AddLecture extends Component {
                                      Select</Text>
                             </Button>
                         </Item>
-
+                        
                         <Item style={{height: 70}}>
                             <Icon type="Foundation" name='book' />
                             <Text style={styles.font}>Course Type </Text>
 
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.font}> College </Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}> College </Text>
                                 <Radio style={{paddingRight: 20, paddingLeft: 8}} selected={this.state.type_course === 1}
                                     onPress={(type_course) => {this.setState({type_course: 1})}}/>
 
-                                <Text style={styles.font}>Genral</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Genral</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.type_course === 2}
                                     onPress={(type_course) => {this.setState({type_course: 2})}}/>  
                             </View>
@@ -382,17 +398,17 @@ export default class AddLecture extends Component {
 
                             <View style={{flexDirection: 'row',  paddingLeft: 10}}>
                                 <Icon type="FontAwesome" name='male' />
-                                <Text style={styles.font}>Male</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Male</Text>
                                 <Radio style={{paddingRight: 5, paddingLeft: 8}} selected={this.state.gender === 1}
                                     onPress={(gender) => {this.setState({gender: 1})}}/>
 
                                 <Icon type="FontAwesome" name='female' />
-                                <Text style={styles.font}>Female</Text>
-                                <Radio style={{paddingLeft: 8}} selected={this.state.gender === 2}
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Female</Text>
+                                <Radio style={{paddingLeft: 8, paddingRight:5}} selected={this.state.gender === 2}
                                     onPress={(gender) => {this.setState({gender: 2})}}/>
                                 
                                 <Icon type="FontAwesome" name='transgender-alt' />
-                                <Text style={styles.font}>Both</Text>
+                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Both</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 3}
                                     onPress={(gender) => {this.setState({gender: 3})}}/>
                             </View>
@@ -409,35 +425,10 @@ export default class AddLecture extends Component {
                             />
                         </Item>
 
-                        {/* <Item style={{height: 120}}>
-                            <Icon type="Feather" name='user-plus' />
-                            <Text style={styles.font}>Add Student </Text>
-                            <View style={{flex:1}}>
-                                <Input onChangeText={(price) => this.setState({price})}
-                                        value={this.state.price}
-                                        placeholder="Name..."
-                                        placeholderTextColor="#ccc5c5"
-                                />
-                                <Input onChangeText={(price) => this.setState({price})}
-                                    value={this.state.price}
-                                    keyboardType={'phone-pad'}
-                                    placeholder="Phone number..."
-                                    placeholderTextColor="#ccc5c5"
-                            />
-                            </View>
-                        </Item> */}
-                        {
-                            this.state.searchedUsers.map((abc, index)=>{
-                                // this.state.namePhone = abc.name + abc.phone
-                                this.setState({
-                                    namePhone: abc.name + abc.phone
-                                })
-                               return <Text>{this.state.namePhone}</Text>
-                            })
-                        }
+                        <Item style={{flex: 1, height: 70}}>
                             <MultiSelect
                                 hideTags
-                                items={this.state.searchedUsers}
+                                items={this.state.datas}
                                 uniqueKey="id"
                                 ref={(component) => { this.multiSelect = component }}
                                 onSelectedItemsChange={this.onSelectedItemsChange}
@@ -458,6 +449,7 @@ export default class AddLecture extends Component {
                                 submitButtonText="Submit"
                                 styles={{backgroundColor: 'red'}}
                             />
+                        </Item>
                                
                         <Item style={{height: 70, borderColor: "transparent", paddingBottom: 0, marginBottom: 0}} underline={false}>
                             <Icon type="MaterialIcons" name='description' />
@@ -475,15 +467,17 @@ export default class AddLecture extends Component {
                         </Item>
                         <Button
                             onPress={() => this.addLecture()}
-                            style={{flexDirection: "row", backgroundColor: '#fdeed1'}}
-                            block light
+                            style={{flexDirection: "row", backgroundColor: '#d3d3ea'}}
+                            block
                         >
-                            <Text style={styles.font}>Add Lecture</Text>
+                            <Text style={{fontFamily: "Pangolin-Regular", color: '#000'}}>Add</Text>
                             {this.state.isLoading && (
                                 <ActivityIndicator size="small" color="#000000" />
                             )}
+                            <Icon type="Ionicons" name="md-add-circle" style={{color: Color.mainColor, fontSize: 18}}/>
                         </Button>
                     </Form>
+                </View>
             </AppTemplate>
         );
     }
@@ -496,8 +490,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     content:{
-        flexDirection: 'row',
-        marginBottom:25,
+        backgroundColor: Color.background,
+        padding:7,
     },
     contentDescription:{
     },

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, FlatList, AsyncStorage, Alert, ActivityIndicator } from 'react-native';
 import { Icon, Form, Item, Picker, DatePicker, Button, Label, List, ListItem, Left, Body, 
-    Right, Thumbnail, Card, CardItem, Toast} from 'native-base';
+    Right, Thumbnail, Card, CardItem, Toast, H3} from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import axios from "axios";
@@ -168,18 +168,19 @@ class Lectures extends Component {
 
                     ):(
                             <View>
-                            <Button onPress={() => this.setState({isSetting: !this.state.isSetting})} style={{width: "100%", alignItems: "center"}} dark><Text style={{flex: 1, color: '#fff'}}> Settings </Text>
-                            <Icon name={this.state.isSetting? "ios-arrow-dropup-circle": "ios-arrow-dropdown-circle"} style={{color: "#FFFFFF", fontSize: 25}}/>
+                            <Button onPress={() => this.setState({isSetting: !this.state.isSetting})} style={{width: "100%", alignItems: "center", backgroundColor: '#d3d3ea'}}>
+                            <Text style={{flex: 1, color: '#000'}}> Settings </Text>
+                            <Icon name={this.state.isSetting? "ios-arrow-dropup-circle": "ios-arrow-dropdown-circle"} style={{color: Color.mainColor, fontSize: 25}}/>
                             </Button>
                             { 
                                 (this.state.isSetting) && (
-                                    <List style={{backgroundColor: "#000", right: 0}}>
+                                    <List style={{backgroundColor: "#d3d3ea", right: 0}}>
                                         {
                                             (this.state.editable == 1) ? (
                                                 <ListItem
                                                     onPress={() => this.props.navigation.navigate("EditLecture", {...this.state.lecture})}
                                                 >
-                                                    <Text style={{flex: 1, color: '#fff'}}>Edit Lecture</Text>
+                                                    <Text style={{flex: 1, color: '#000'}}>Edit Lecture</Text>
                                                 </ListItem>
 
                                             ):null
@@ -189,7 +190,7 @@ class Lectures extends Component {
                                         <ListItem
                                             onPress={() => this.deleteLecture()}
                                         >
-                                            <Text style={{flex: 1, color: '#fff'}}>Delete Lecture</Text>
+                                            <Text style={{flex: 1, color: '#000'}}>Delete Lecture</Text>
                                         </ListItem>
                                     </List>
                                 )
@@ -197,6 +198,7 @@ class Lectures extends Component {
                             </View>   
                     )
                 }
+                <View style={styles.content}>
                     <View style={styles.Box}>
 
                         <Item style={styles.item}>
@@ -219,8 +221,8 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="dollar" />
-                            <Text style={styles.lectureTxt}>Cost</Text>
-                            <Button transparent style={styles.price}>
+                            <H3 style={styles.lectureTxt}>Cost</H3>
+                            <Button transparent style={styles.price2}>
                                 <Text style={styles.priceText}>{this.state.lecture.price}</Text>
                                 <Text style={styles.priceIcon}>$</Text>
                             </Button>
@@ -228,7 +230,7 @@ class Lectures extends Component {
                         </Item>
                         <Item style={styles.item2}>
                             <Icon type="Entypo" name="wallet" />
-                            <Text style={styles.lectureTxt}>Payment</Text>
+                            <H3 style={styles.lectureTxt}>Payment</H3>
                             <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
                             Before attending
                             </Text>
@@ -237,7 +239,7 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="Foundation" name="results" />
-                            <Text style={styles.lectureTxt}>Course Type</Text>
+                            <H3 style={styles.lectureTxt}>Course Type</H3>
                             <View style={{justifyContent: 'space-between',  alignItems: 'flex-end'}}>
                             {
                                 (this.state.lecture.type_course == 1) ? (
@@ -256,7 +258,7 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="transgender" />
-                            <Text style={styles.lectureTxt}>Gender</Text>
+                            <H3 style={styles.lectureTxt}>Gender</H3>
                             {
                                 (this.state.lecture.gender == 1) ? (
                                     <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
@@ -277,7 +279,7 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="Entypo" name="back-in-time" />
-                            <Text style={styles.lectureTxt}>Duration</Text>
+                            <H3 style={styles.lectureTxt}>Duration</H3>
                             <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
                             {this.state.lecture.start_duration} To {this.state.lecture.end_duration}
                             </Text>                            
@@ -285,7 +287,7 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="users" />
-                            <Text style={styles.lectureTxt}>Attendance</Text>
+                            <H3 style={styles.lectureTxt}>Attendance</H3>
                             <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
                             {this.state.lecture.length}
                             </Text>
@@ -293,7 +295,7 @@ class Lectures extends Component {
 
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="check-square-o" />
-                            <Text style={styles.lectureTxt}>Allowed</Text>
+                            <H3 style={styles.lectureTxt}>Allowed</H3>
                             <Text style={{position: 'absolute',left: 250,fontFamily: "Pangolin-Regular",}}>
                             {this.state.lecture.allowed}
                             </Text>
@@ -325,6 +327,8 @@ class Lectures extends Component {
                         </CardItem>
                     </Card>
                 </View>
+                
+            </View>
 
             </AppTemplate>
         );
@@ -332,6 +336,11 @@ class Lectures extends Component {
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+        paddingTop: 0
+    },
     Box: {
         flex:1,  
         backgroundColor: '#fff',
@@ -384,7 +393,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontFamily: "Pangolin-Regular",
     },
-    price:{
+    price2:{
         position: 'absolute',
         left: 200,
         top: 15
@@ -405,7 +414,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:5,
         paddingLeft: 20,
         paddingRight: 20,
-        padding: 1
+        padding: 0.5
     },
     commentTxt:{
         fontSize: 22,

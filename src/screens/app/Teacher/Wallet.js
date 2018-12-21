@@ -39,6 +39,7 @@ export default class Wallet extends Component {
     render() {
         return (
             <AppTemplate title="Wallet">
+                <View style={styles.content}>
 
                     <View style={styles.Box0}>
                         <Item style={{height: 70, padding: 15, paddingBottom:0, backgroundColor: '#fff', borderColor: 'transparent' }}>
@@ -65,7 +66,7 @@ export default class Wallet extends Component {
                         
                         <FlatList
                             ListEmptyComponent={
-                                <Text style={{ fontSize: 20, fontFamily: "Pangolin-Regular", padding:5, flex: 1, textAlign: "center"}}>No one joint ur lectures</Text>
+                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-Regular", padding:5, flex: 1, textAlign: "center"}}>No one joint ur lectures</Text>
                             }
                             data={this.state.showLectAndUser}
                             renderItem={({item}) => (
@@ -118,7 +119,7 @@ export default class Wallet extends Component {
                         />
                     )
                 }
-
+                </View>
 
             </AppTemplate>
         );
@@ -126,6 +127,10 @@ export default class Wallet extends Component {
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+    },
     Box0: { 
         backgroundColor: '#fff',
         height: 150,
@@ -164,7 +169,7 @@ const styles = StyleSheet.create({
     },
     right:{
         marginLeft: 125,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "OpenSans-Regular",
     },
     priceText:{
         backgroundColor:'#fff',
@@ -185,7 +190,7 @@ const styles = StyleSheet.create({
         padding: 0.5
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "OpenSans-Regular",
     },
     image:{
         width:20, 
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
     rightCash:{
         position: 'absolute',
         left: 240,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "OpenSans-Regular",
     }
 
 });

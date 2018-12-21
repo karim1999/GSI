@@ -35,7 +35,8 @@ export default class LecturePayment extends Component {
     
     render() {
         return (
-            <AppTemplate back navigation={this.props.navigation}>  
+            <AppTemplate back navigation={this.props.navigation} title = {this.state.lecture.title}>  
+                <View style={styles.content}>
 
                 <View style={styles.Box}>
                     <Item style={{height: 70, padding: 15, paddingBottom:0, backgroundColor: '#fff', borderColor: 'transparent' }}>
@@ -63,7 +64,7 @@ export default class LecturePayment extends Component {
                             <CardItem style={{}}>
                                 <Left>
                                 <Thumbnail source={require('../../../images/Background.png')} />
-                                <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{item.user_name}</Text>
+                                <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{item.name}</Text>
                                 </Left>
                                 <Right style={styles.allStarsComment}>
                                     <View style={styles.firstBox}></View>
@@ -88,7 +89,7 @@ export default class LecturePayment extends Component {
                                             <Label style={styles.font}>None</Label>
                                         ):
                                         (
-                                            <Label style={styles.font}>{this.state.lecture.price - item.pivot.amount}</Label>
+                                            <Label style={styles.font}>{this.state.lecture.price - item.pivot.amount}$</Label>
                                         )
                                     }
                                 </Right>
@@ -98,6 +99,7 @@ export default class LecturePayment extends Component {
                 )}
                 keyExtractor = { (item, index) => index.toString() }
                 />
+                </View>
 
             </AppTemplate>
         );
@@ -105,6 +107,10 @@ export default class LecturePayment extends Component {
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+    },
     Box: {
         height: 150, 
         backgroundColor: '#fff',
@@ -115,7 +121,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5,
         padding: 5, 
-        paddingTop: 0
+        paddingTop: 0,
+        marginBottom: 30
     },
     firstBox:{
         width: 10, 
@@ -125,10 +132,9 @@ const styles = StyleSheet.create({
     },
     button:{
         backgroundColor: '#fef5e5',
-        paddingTop: 10,
-        paddingBottom: 10,
-        padding: 35,
-        borderRadius: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
+        padding: 10,
         marginTop: 20,
         justifyContent: 'center',
         alignSelf: 'center',
