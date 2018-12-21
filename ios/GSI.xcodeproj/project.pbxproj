@@ -57,6 +57,9 @@
 		E8AB68449E1744E48821F4BA /* OpenSansCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */; };
 		02E8690B0B604B499203C652 /* OpenSansCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */; };
 		582549D1C3814300983E76F3 /* OpenSansCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */; };
+		CD831BA0E44545E98036BDC6 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1255EAB45874518BC895950 /* libRNImagePicker.a */; };
+		A8CC8FDEA22C4EE3843AE837 /* Baloo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D22247D60210494A86B931D1 /* Baloo-Regular.ttf */; };
+		74C7DCAECFC34C08B66D73C8 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 983755047D89463AB539D597 /* OpenSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -382,6 +385,10 @@
 		EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Bold.ttf"; path = "../assets/fonts/OpenSansCondensed-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-Light.ttf"; path = "../assets/fonts/OpenSansCondensed-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */ = {isa = PBXFileReference; name = "OpenSansCondensed-LightItalic.ttf"; path = "../assets/fonts/OpenSansCondensed-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		430528E6786E4E8AB2F9CC7E /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; name = "RNImagePicker.xcodeproj"; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D1255EAB45874518BC895950 /* libRNImagePicker.a */ = {isa = PBXFileReference; name = "libRNImagePicker.a"; path = "libRNImagePicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		D22247D60210494A86B931D1 /* Baloo-Regular.ttf */ = {isa = PBXFileReference; name = "Baloo-Regular.ttf"; path = "../assets/fonts/Baloo-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		983755047D89463AB539D597 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -409,6 +416,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				CD831BA0E44545E98036BDC6 /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,6 +603,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
+				430528E6786E4E8AB2F9CC7E /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -666,6 +675,8 @@
 				EFC28E6DBBC546BDA941F242 /* OpenSansCondensed-Bold.ttf */,
 				AD92E8F77E384FAAB25ADCD3 /* OpenSansCondensed-Light.ttf */,
 				0C4DE05A92164E53B91E541C /* OpenSansCondensed-LightItalic.ttf */,
+				D22247D60210494A86B931D1 /* Baloo-Regular.ttf */,
+				983755047D89463AB539D597 /* OpenSans-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1137,6 +1148,8 @@
 				E8AB68449E1744E48821F4BA /* OpenSansCondensed-Bold.ttf in Resources */,
 				02E8690B0B604B499203C652 /* OpenSansCondensed-Light.ttf in Resources */,
 				582549D1C3814300983E76F3 /* OpenSansCondensed-LightItalic.ttf in Resources */,
+				A8CC8FDEA22C4EE3843AE837 /* Baloo-Regular.ttf in Resources */,
+				74C7DCAECFC34C08B66D73C8 /* OpenSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1271,9 +1284,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GSI.app/GSI";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Debug;
@@ -1295,9 +1310,11 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GSI.app/GSI";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Release;
@@ -1320,6 +1337,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Debug;
@@ -1341,6 +1359,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Release;
@@ -1370,9 +1389,11 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Debug;
@@ -1402,9 +1423,11 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Release;
@@ -1433,9 +1456,11 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Debug;
@@ -1464,9 +1489,11 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 				);
 			};
 			name = Release;

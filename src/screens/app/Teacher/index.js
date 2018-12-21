@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15
     },
     title:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
         paddingVertical:10
     },
     viewImageRobot:{
@@ -132,10 +132,10 @@ const styles = StyleSheet.create({
         borderRadius: 10        
     },
     txt:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
     txtTitle:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
         padding: 10
     }
 

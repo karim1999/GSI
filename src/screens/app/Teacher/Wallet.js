@@ -66,7 +66,7 @@ export default class Wallet extends Component {
                         
                         <FlatList
                             ListEmptyComponent={
-                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-Regular", padding:5, flex: 1, textAlign: "center"}}>No one joint ur lectures</Text>
+                                <Text style={{ fontSize: 20, fontFamily: "Roboto", padding:5, flex: 1, textAlign: "center"}}>No one joint ur lectures</Text>
                             }
                             data={this.state.showLectAndUser}
                             renderItem={({item}) => (
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fef5e5',
         paddingTop: 0,
         paddingBottom: 0,
-        padding: 10,
+        padding: 30,
         marginTop: 20,
         justifyContent: 'center',
         alignSelf: 'center',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     },
     right:{
         marginLeft: 125,
-        fontFamily: "OpenSans-Regular",
+        fontFamily: "Roboto",
     },
     priceText:{
         backgroundColor:'#fff',
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         padding: 0.5
     },
     font:{
-        fontFamily: "OpenSans-Regular",
+        fontFamily: "Roboto",
     },
     image:{
         width:20, 
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     rightCash:{
         position: 'absolute',
         left: 240,
-        fontFamily: "OpenSans-Regular",
+        fontFamily: "Roboto",
     }
 
 });
