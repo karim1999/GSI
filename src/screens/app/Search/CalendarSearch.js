@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Icon, Form, Item, Picker, DatePicker, Button, Toast } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import Server from "../../../constants/config";
 import axios from "axios";
+import firebase from 'react-native-firebase';
+import {  RemoteMessage, Notification } from 'react-native-firebase';
+
+
 
 export default class CalendarSearch extends Component {
   constructor(props) {
@@ -13,10 +17,40 @@ export default class CalendarSearch extends Component {
     this.state = {
       items: {},
       showLectures: {},
+      token: ""
     };
   }
+  
+      askForNotificationPermission(){
+        firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (!enabled) {
+                    firebase.messaging().requestPermission()
+                        .then(() => {
+                            // this.notificationListener2();
+                            Toast.show({
+                                text: "تم تفعيل خاصية الاشعارات",
+                                buttonText: "موافق",
+                                type: "success"
+                            })
+                        })
+                        .catch(error => {
+                            Toast.show({
+                                text: "تم الغاء خاصية الاشعارات",
+                                buttonText: "موافق",
+                                type: "danger"
+                            })
+                        });
+                }
+                // else{
+                //     this.notificationListener2();
+                // }
+            });
+        return true;
+    }
+  
     componentDidMount(){
-      return axios.get(Server.url + 'api/lecturesDate')
+       axios.get(Server.url + 'api/lecturesDate')
       .then(response => {
           this.setState({
             showLectures: response.data,
@@ -28,8 +62,39 @@ export default class CalendarSearch extends Component {
               buttonText: 'Okay'
           });
       })
+      
+      firebase.messaging().getToken()
+      .then(fcmToken => {
+        if (fcmToken) {
+          this.state.token = fcmToken;
+          AsyncStorage.getItem('token').then(userToken => {
+            axios.post(Server.url + 'api/updatetoken?token='+userToken,
+                {token: this.state.token}
+            )
+            .then(response=>{
+              
+              })
+          })
+        } else {
+          Toast.show({
+            text: 'You must accept to send notification to you.',
+            type: "danger",
+            buttonText: 'Okay'
+        });
+        } 
+      });
+     if(this.askForNotificationPermission()){
+      this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
+        // Process your notification as required
+    });
+
+     }
+      
     }
 
+    componentWillUnmount() {
+      this.notificationListener();
+  }
     render() {
         return (
           <Agenda
@@ -88,10 +153,11 @@ export default class CalendarSearch extends Component {
 
     renderItem(item) {
       return (
-        <TouchableOpacity style={[styles.item, {height:100}]}  onPress={()=>this.props.navigation.navigate('Lectures', {...item})}>
+        <TouchableOpacity style={[styles.item, {height:100}]}  onPress={()=>this.props.navigation.navigate('LectureStudent', {...item})}>
           <Text style={styles.itemTxt}>{item.title}</Text>
           <Text style={styles.itemTxt}>{item.subject}</Text>  
-          <Text style={styles.itemTxtDate}>{item.start_duration}</Text>    
+          <Text style={styles.itemTxtDate}>{item.start_duration}</Text>
+          <Image source={require('../../../images/idea.png')} style={{position: 'absolute', right: 20, top: 20, borderRadius:50, width: 50, height:50}}/>    
         </TouchableOpacity>
       );
     };
@@ -113,21 +179,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex:1,
     padding: 10,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   dateStyle:{
     fontSize: 25,
     padding: 10,
-    fontFamily: "Pangolin-Regular",   
+    fontFamily: "Roboto",   
   },
   itemTxt:{
     fontSize: 17,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
     textAlign: 'left'
   },
   itemTxtDate:{
     fontSize: 17,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
     textAlign: 'left',
     color: '#9eb1c1'
   },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, AsyncStorage, TouchableOpacity } from 'react-native';
-import { Icon, Form, Item, DatePicker, Button, Input } from 'native-base';
+import { StyleSheet, Text, View, Image, AsyncStorage, TouchableOpacity,FlatList } from 'react-native';
+import { Icon, Form, Item, Button, Input } from 'native-base';
 import Color from '../../../constants/colors';
 import AppTemplate from "../appTemplate";
 import axios from "axios";
@@ -23,7 +23,7 @@ export default class Search extends Component {
             start_duration: " Start Time",
             end_duration: " End Time",
             searchLectures: []
-         };;
+         };
       }
 
       _showStartTimePicker = () => this.setState({ isStartTimeVisible: true });
@@ -65,6 +65,8 @@ export default class Search extends Component {
                 })
             })
         })
+
+        alert( moment(this.state.start_duration).format('YYYY-MM-DD h:mm a') )
     }
 
       async Data(){
@@ -79,11 +81,11 @@ export default class Search extends Component {
               data = await _.filter(data, lecture => lecture.subject.toLowerCase().indexOf(this.state.subject.toLowerCase()) > -1);
           }
 
-        //   if(this.state.teacher !== ""){
-        //     data = await _.filter(data, lecture => lecture.user.name == this.state.teacher);
-        // }
+          if(this.state.teacher !== ""){
+            data = await _.filter(data, lecture => lecture.user.name == this.state.teacher);
+        }
+
         // if(this.state.start_duration !== ""){
-        
             
         //     data = await _.filter(data, lecture => moment(moment(lecture.start_duration)
         //     .format('YYYY-MM-DD h:mm a')).isAfter(this.state.start_duration));
@@ -99,18 +101,19 @@ export default class Search extends Component {
     
     render() {
         return (
-            <AppTemplate navigation={this.props.navigation}>
+            <AppTemplate navigation={this.props.navigation} back title="Search">
+            <View style={styles.content}>
                 <View style={styles.Box}>
                     <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="user" />
                         <Text style={styles.lectureTxt}>Lecture</Text>
                         <Input onChangeText={(title) => this.setState({title})}
-                                placeholder="ex: Quantum mechanics..."
+                                placeholder="Lecture name"
                                 placeholderTextColor="#ccc5c5"
                         />
                     </Item>
 
-                    <Item style={styles.lecture}>
+                    {/* <Item style={styles.lecture}>
                         <Icon type="FontAwesome" name="calendar" />
                         <Text style={styles.lectureTxt}>From </Text>
                         <View>
@@ -138,13 +141,13 @@ export default class Search extends Component {
                                 is24Hour={false}
                             />
                       </View>
-                    </Item>
+                    </Item> */}
 
                     <Item style={styles.lecture}>
                         <Icon type="Foundation" name="results" />
                         <Text style={styles.lectureTxt}>Subject</Text>
                         <Input onChangeText={(subject) => this.setState({subject})}
-                                placeholder="ex: Quantum mechanics..."
+                                placeholder="Subject name"
                                 placeholderTextColor="#ccc5c5"
                         />
                     </Item>
@@ -153,7 +156,7 @@ export default class Search extends Component {
                         <Icon type="Foundation" name="results" />
                         <Text style={styles.lectureTxt}>Teacher</Text>
                         <Input onChangeText={(teacher) => this.setState({teacher})}
-                                placeholder="ex: Quantum mechanics..."
+                                placeholder="Teacher name"
                                 placeholderTextColor="#ccc5c5"
                         />
                     </Item>
@@ -164,18 +167,50 @@ export default class Search extends Component {
 
                 </View>
 
+                {
+                    (()=> this.Data())?(
+                        <FlatList
+                        data={this.state.searchLectures}
+                        renderItem={({item}) => (
+                            <TouchableOpacity style={styles.Box1}>
+                                <Item style={styles.item}>
+                                    <View style={styles.viewImage}>
+                                        <Image source={require('../../../images/idea.png')} style={styles.image}/>
+                                    </View>
+                                    <View>
+                                        <Text style={styles.txt}>{item.title}</Text>
+                                        <Text style={styles.txt}>{item.subject}</Text>
+                                        <Text style={styles.txt}>{item.user.name}</Text>
+                                        <Text style={styles.txt}>{item.start_duration}</Text>
+                                    </View>
+                                </Item>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor = { (item, index) => index.toString() }
+                        />
+                    ):null
+                }
+
+            </View>
             </AppTemplate>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+    },
     Box: {
-        flex:1,  
         backgroundColor: '#fff',
-        borderRadius: 5,
         padding: 30,
         paddingTop: 0,
+        marginBottom: 30
+    },
+    Box1: {
+        backgroundColor: '#fff',
+        padding: 15,
     },
     lecture:{
         backgroundColor: 'white', 
@@ -204,5 +239,19 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 20,
     },
+    item:{
+        padding: 10,
+    },
+    viewImage:{
+        paddingRight: 50
+    },
+    image:{
+        width:80, 
+        height: 80, 
+        borderRadius: 10        
+    },
+    txt:{
+        fontFamily: "Roboto",
+    }
 
 });

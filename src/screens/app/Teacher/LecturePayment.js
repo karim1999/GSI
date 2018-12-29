@@ -55,6 +55,9 @@ export default class LecturePayment extends Component {
                 </View>
 
                 <FlatList
+                    ListEmptyComponent={
+                        <Text style={{ fontSize: 20, fontFamily: "Roboto", padding:5, flex: 1, textAlign: "center"}}>No one joint ur lectures</Text>
+                    }
                     data={this.state.lecture.joint_users}
                     renderItem={({item}) => (
 
@@ -64,7 +67,7 @@ export default class LecturePayment extends Component {
                             <CardItem style={{}}>
                                 <Left>
                                 <Thumbnail source={require('../../../images/Background.png')} />
-                                <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>{item.name}</Text>
+                                <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Roboto",}}>{item.name}</Text>
                                 </Left>
                                 <Right style={styles.allStarsComment}>
                                     <View style={styles.firstBox}></View>
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     font:{
-        fontFamily: "Pangolin-Regular"
+        fontFamily: "Roboto"
     },
     list:{
         paddingRight: 60,  

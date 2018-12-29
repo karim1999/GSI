@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     alignSelf: 'center',
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   Teacher:{
     backgroundColor:'#293845',
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
     color: '#e7bbbb',
     fontSize: 16,
     alignSelf: 'center',
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
 });

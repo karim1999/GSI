@@ -41,11 +41,13 @@ class SignIn extends Component {
                     type: 'success',
                     buttonText: 'Okay'
                 });
-                if(this.props.user.type == 1){
-                    this.props.navigation.navigate('AppStudent');
-                }else{
-                    this.props.navigation.navigate('AppTeacher');
-                }
+                axios.post(Server.url+'api/auth/me?token=' + response.data.access_token).then(response => {
+                    if(response.data.type == 1){
+                        this.props.navigation.navigate('AppStudent');
+                    }else{
+                        this.props.navigation.navigate('AppTeacher');
+                    }
+                });
                 this.setState({
                     isSigningIn: false
                 })
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
   input:{
     color: '#fff',
     textAlign: 'center',
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   button:{
     backgroundColor: '#37446e',
@@ -142,19 +144,19 @@ const styles = StyleSheet.create({
   buttonTxt:{
     color: '#fff',
     fontSize: 20,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   forgetButton:{
       color: '#d9cdb7',
       fontSize: 16,
       marginTop: 10,
-      fontFamily: "Pangolin-Regular",
+      fontFamily: "Roboto",
   },
   registerButton:{
     color: '#d9cdb7',
     fontSize: 16,
     marginTop: 10,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
     justifyContent: 'center', 
     alignSelf: 'center'
 }

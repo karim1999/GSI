@@ -35,6 +35,7 @@ export default class AddLecture extends Component {
             title: "",
             subject: "",
             price: 0,
+            payment: "",
             type_course: "",
             gender: "",
             allowed: "",
@@ -205,6 +206,7 @@ export default class AddLecture extends Component {
                     data.append('start_date', duration_date);
                     data.append('title', this.state.title);
                     data.append('subject', this.state.subject);
+                    data.append('payment', this.state.payment);
                     data.append('type_course', this.state.type_course);
                     data.append('gender', this.state.gender);
                     data.append('price', this.state.price);
@@ -375,17 +377,33 @@ export default class AddLecture extends Component {
                                      Select</Text>
                             </Button>
                         </Item>
+
+                        <Item style={{height: 70}}>
+                            <Icon type="Foundation" name='book' />
+                            <Text style={styles.font}>Payment </Text>
+
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}> Before Attend </Text>
+                                <Radio style={{paddingRight: 10, paddingLeft: 8}} selected={this.state.payment === 1}
+                                    onPress={(payment) => {this.setState({payment: 1})}}/>
+
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>After Attend </Text>
+                                <Radio style={{paddingLeft: 8}} selected={this.state.payment === 2}
+                                    onPress={(payment) => {this.setState({payment: 2})}}/>  
+                            </View>
+
+                        </Item>
                         
                         <Item style={{height: 70}}>
                             <Icon type="Foundation" name='book' />
                             <Text style={styles.font}>Course Type </Text>
 
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}> College </Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}> College </Text>
                                 <Radio style={{paddingRight: 20, paddingLeft: 8}} selected={this.state.type_course === 1}
                                     onPress={(type_course) => {this.setState({type_course: 1})}}/>
 
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Genral</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Genral</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.type_course === 2}
                                     onPress={(type_course) => {this.setState({type_course: 2})}}/>  
                             </View>
@@ -398,17 +416,17 @@ export default class AddLecture extends Component {
 
                             <View style={{flexDirection: 'row',  paddingLeft: 10}}>
                                 <Icon type="FontAwesome" name='male' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Male</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Male</Text>
                                 <Radio style={{paddingRight: 5, paddingLeft: 8}} selected={this.state.gender === 1}
                                     onPress={(gender) => {this.setState({gender: 1})}}/>
 
                                 <Icon type="FontAwesome" name='female' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Female</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Female</Text>
                                 <Radio style={{paddingLeft: 8, paddingRight:5}} selected={this.state.gender === 2}
                                     onPress={(gender) => {this.setState({gender: 2})}}/>
                                 
                                 <Icon type="FontAwesome" name='transgender-alt' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Both</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Both</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 3}
                                     onPress={(gender) => {this.setState({gender: 3})}}/>
                             </View>
@@ -425,31 +443,29 @@ export default class AddLecture extends Component {
                             />
                         </Item>
 
-                        <Item style={{flex: 1, height: 70}}>
-                            <MultiSelect
-                                hideTags
-                                items={this.state.datas}
-                                uniqueKey="id"
-                                ref={(component) => { this.multiSelect = component }}
-                                onSelectedItemsChange={this.onSelectedItemsChange}
-                                selectedItems={this.state.tableData}
-                                selectText="Add students"
-                                searchInputPlaceholderText="Search students..."
-                                onChangeInput={ (text)=> console.log(text)}
-                                altFontFamily="ProximaNova-Light"
-                                tagRemoveIconColor="#CCC"
-                                tagBorderColor="#CCC"
-                                tagTextColor="#CCC"
-                                selectedItemTextColor="#CCC"
-                                selectedItemIconColor="#CCC"
-                                itemTextColor="#000"
-                                displayKey="name"
-                                searchInputStyle={{ color: '#CCC' }}
-                                submitButtonColor="#CCC"
-                                submitButtonText="Submit"
-                                styles={{backgroundColor: 'red'}}
-                            />
-                        </Item>
+                        <MultiSelect
+                            hideTags
+                            items={this.state.datas}
+                            uniqueKey="id"
+                            ref={(component) => { this.multiSelect = component }}
+                            onSelectedItemsChange={this.onSelectedItemsChange}
+                            selectedItems={this.state.tableData}
+                            selectText="Add students"
+                            searchInputPlaceholderText="Search students..."
+                            onChangeInput={ (text)=> console.log(text)}
+                            altFontFamily="ProximaNova-Light"
+                            tagRemoveIconColor="#CCC"
+                            tagBorderColor="#CCC"
+                            tagTextColor="#CCC"
+                            selectedItemTextColor="#CCC"
+                            selectedItemIconColor="#CCC"
+                            itemTextColor="#000"
+                            displayKey="name"
+                            searchInputStyle={{ color: '#CCC' }}
+                            submitButtonColor="#CCC"
+                            submitButtonText="Submit"
+                            styles={{backgroundColor: 'red'}}
+                        />
                                
                         <Item style={{height: 70, borderColor: "transparent", paddingBottom: 0, marginBottom: 0}} underline={false}>
                             <Icon type="MaterialIcons" name='description' />
@@ -470,7 +486,7 @@ export default class AddLecture extends Component {
                             style={{flexDirection: "row", backgroundColor: '#d3d3ea'}}
                             block
                         >
-                            <Text style={{fontFamily: "Pangolin-Regular", color: '#000'}}>Add</Text>
+                            <Text style={{fontFamily: "Roboto", color: '#000'}}>Add</Text>
                             {this.state.isLoading && (
                                 <ActivityIndicator size="small" color="#000000" />
                             )}
@@ -525,6 +541,6 @@ const styles = StyleSheet.create({
         bottom: 10
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
 });

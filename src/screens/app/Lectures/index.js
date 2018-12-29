@@ -152,7 +152,7 @@ class Lectures extends Component {
                             <Text></Text>
                         ):(
                             <Button
-                            onPress={() => this.applyLecture(this.state.lecture.id)}
+                            onPress={() => this.props.navigation.navigate('WeebView', {...this.state.lecture})}
                             style={{width: "100%", alignItems: "center", backgroundColor: '#d3d3ea'}}>
     
                             <Text style={{flex: 1, paddingLeft: 10}}> Apply </Text>
@@ -231,8 +231,19 @@ class Lectures extends Component {
                         <Item style={styles.item2}>
                             <Icon type="Entypo" name="wallet" />
                             <H3 style={styles.lectureTxt}>Payment</H3>
-                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
-                            Before attending
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Roboto",}}>
+                            {
+                                (this.state.lecture.payment == 1) ? (
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Roboto",}}>
+                                        Before Attend
+                                    </Text>
+
+                                ):(
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Roboto",}}>
+                                        After Attend
+                                    </Text>
+                                )
+                            }
                             </Text>
                             
                         </Item>
@@ -243,12 +254,12 @@ class Lectures extends Component {
                             <View style={{justifyContent: 'space-between',  alignItems: 'flex-end'}}>
                             {
                                 (this.state.lecture.type_course == 1) ? (
-                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Pangolin-Regular",}}>
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Roboto",}}>
                                         College
                                     </Text>
 
                                 ):(
-                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Pangolin-Regular",}}>
+                                    <Text style={{position: 'absolute',left: 100,fontFamily: "Roboto",}}>
                                         Genral
                                     </Text>
                                 )
@@ -261,16 +272,16 @@ class Lectures extends Component {
                             <H3 style={styles.lectureTxt}>Gender</H3>
                             {
                                 (this.state.lecture.gender == 1) ? (
-                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Roboto",}}>
                                         Male
                                     </Text>
 
                                 ):(this.state.lecture.gender == 2)?(
-                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Roboto",}}>
                                         Female
                                     </Text>
                                 ):(
-                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Pangolin-Regular",}}>
+                                    <Text style={{position: 'absolute',left: 230,fontFamily: "Roboto",}}>
                                         Both
                                     </Text>
                                 )
@@ -280,7 +291,7 @@ class Lectures extends Component {
                         <Item style={styles.item2}>
                             <Icon type="Entypo" name="back-in-time" />
                             <H3 style={styles.lectureTxt}>Duration</H3>
-                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Roboto",}}>
                             {this.state.lecture.start_duration} To {this.state.lecture.end_duration}
                             </Text>                            
                         </Item>
@@ -288,7 +299,7 @@ class Lectures extends Component {
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="users" />
                             <H3 style={styles.lectureTxt}>Attendance</H3>
-                            <Text style={{position: 'absolute',left: 200,fontFamily: "Pangolin-Regular",}}>
+                            <Text style={{position: 'absolute',left: 200,fontFamily: "Roboto",}}>
                             {this.state.lecture.length}
                             </Text>
                         </Item>
@@ -296,7 +307,7 @@ class Lectures extends Component {
                         <Item style={styles.item2}>
                             <Icon type="FontAwesome" name="check-square-o" />
                             <H3 style={styles.lectureTxt}>Allowed</H3>
-                            <Text style={{position: 'absolute',left: 250,fontFamily: "Pangolin-Regular",}}>
+                            <Text style={{position: 'absolute',left: 250,fontFamily: "Roboto",}}>
                             {this.state.lecture.allowed}
                             </Text>
                         </Item>
@@ -310,7 +321,7 @@ class Lectures extends Component {
                         <CardItem style={{}}>
                             <Left>
                             <Thumbnail source={require('../../../images/Background.png')} />
-                            <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Pangolin-Regular",}}>John Hendrseon</Text>
+                            <Text style={{paddingLeft: 10, fontSize: 19, fontFamily: "Roboto",}}>John Hendrseon</Text>
                             </Left>
                             <Right style={styles.allStarsComment}>
                                 <Icon style={styles.star} type="MaterialCommunityIcons" name="star" />
@@ -322,7 +333,7 @@ class Lectures extends Component {
                         </CardItem>
                         <CardItem style={{}}>
                             <Body>
-                            <Text style={{fontFamily: "Pangolin-Regular",}}>asdsadsaddsddddsadasdsad</Text>
+                            <Text style={{fontFamily: "Roboto",}}>asdsadsaddsddddsadasdsad</Text>
                             </Body>
                         </CardItem>
                     </Card>
@@ -371,7 +382,7 @@ const styles = StyleSheet.create({
         paddingBottom: 25
     },
     txt:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
         fontSize: 18
     },
     star:{
@@ -391,7 +402,7 @@ const styles = StyleSheet.create({
     lectureTxt:{
         fontSize: 18,
         paddingLeft: 10,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
     price2:{
         position: 'absolute',

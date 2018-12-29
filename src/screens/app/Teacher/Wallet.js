@@ -11,10 +11,13 @@ export default class Wallet extends Component {
         super(props);
         this.state = {
             showLectAndUser: [],
-            isLoading: false
+            isLoading: false,
+            random:['#d93232', '#636c8f', '#6c856c', '#fbaf5d'],
+            searchLectures: [],
+            student: "",
         }
     }
-
+    // {firstColor: '#d93232', secondColor: '#636c8f', thirdColor: '#6c856c', fourthColor: '#fbaf5d',}
     componentDidMount(){
         this.setState({
             isLoading: true
@@ -33,12 +36,36 @@ export default class Wallet extends Component {
                     type: "danger"
                 })
             })
-        })
+        })   
+    }
+
+    // color(){
+    //     for(var key in this.state.random){
+    //         alert(this.state.random[key])
+    //     }
+                     
+    // }
+
+    async Data(){
+    //     let data = [];
+    //     data = this.state.showLectAndUser;
+
+    //     if(this.state.student !== ""){
+    //       data = await _.filter(data, lecture => lecture.joint_users.name == this.state.student);
+    //     }
+      
+
+    //   this.setState({
+    //       searchLectures: data
+    //   })
+         
+    //   alert(JSON.stringify(this.state.searchLectures))
+
     }
 
     render() {
         return (
-            <AppTemplate title="Wallet">
+            <AppTemplate title="Wallet" navigation = {this.props.navigation}>
                 <View style={styles.content}>
 
                     <View style={styles.Box0}>
@@ -46,12 +73,13 @@ export default class Wallet extends Component {
                             <Icon type="FontAwesome" name='user' />
                             <Label style={styles.font}>Student Name </Label>
                             <Input
+                                    onChangeText={(student) => this.setState({student})}
                                     placeholder="Name..."
                                     placeholderTextColor="#ccc5c5"
                             />
                         </Item>
 
-                        <Button style={styles.button} >
+                        <Button style={styles.button} onPress={ () => this.Data() }>
                             <Text style={styles.buttonTxt}>SEARCH</Text>
                         </Button>
 
@@ -79,7 +107,7 @@ export default class Wallet extends Component {
 
                                 <View style={styles.Box}>
 
-                                <View style={styles.firstBox}></View>
+                                <View style={{ width: 30, height: 180, backgroundColor: this.state.random[item.id % 4] }}></View>
 
                                 <View style={styles.secondBox}>
                                     <Item style={{height: 45}}>

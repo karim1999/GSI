@@ -36,6 +36,7 @@ export default class EditLecture extends Component {
             price: this.props.navigation.state.params.price,
             start_duration: this.props.navigation.state.params.start_duration,
             end_duration: this.props.navigation.state.params.end_duration,
+            payment: this.props.navigation.state.params.payment,
             type_course: this.props.navigation.state.params.type_course,
             gender: this.props.navigation.state.params.gender,
             allowed: this.props.navigation.state.params.allowed,
@@ -110,6 +111,7 @@ export default class EditLecture extends Component {
             data.append('end_date', this.state.end_date);
             data.append('start_duration', this.state.start_duration);
             data.append('end_duration', this.state.end_duration);
+            data.append('payment', this.state.payment);
             data.append('type_course', this.state.type_course);
             data.append('gender', this.state.gender);
             data.append('allowed', this.state.allowed);
@@ -133,8 +135,6 @@ export default class EditLecture extends Component {
                 this.props.navigation.navigate("CourseView");
                 this.props.setUser(response.data);
             }).catch(error => {
-                alert(JSON.stringify(data))
-                alert(id)
             })
         }).then(() => {
             this.setState({
@@ -270,14 +270,30 @@ export default class EditLecture extends Component {
 
                         <Item style={{height: 70}}>
                             <Icon type="Foundation" name='book' />
+                            <Text style={styles.font}>Payment </Text>
+
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}> Before Attend </Text>
+                                <Radio style={{paddingRight: 10, paddingLeft: 8}} selected={this.state.payment === 1}
+                                    onPress={(payment) => {this.setState({payment: 1})}}/>
+
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>After Attend </Text>
+                                <Radio style={{paddingLeft: 8}} selected={this.state.payment === 2}
+                                    onPress={(payment) => {this.setState({payment: 2})}}/>  
+                            </View>
+
+                        </Item>
+
+                        <Item style={{height: 70}}>
+                            <Icon type="Foundation" name='book' />
                             <Text style={styles.font}>Course Type </Text>
 
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}> College </Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}> College </Text>
                                 <Radio style={{paddingRight: 20, paddingLeft: 8}} selected={this.state.type_course === 1}
                                     onPress={(type_course) => {this.setState({type_course: 1})}}/>
 
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Genral</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Genral</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.type_course === 2}
                                     onPress={(type_course) => {this.setState({type_course: 2})}}/>  
                             </View>
@@ -290,17 +306,17 @@ export default class EditLecture extends Component {
 
                             <View style={{flexDirection: 'row',  paddingLeft: 10}}>
                                 <Icon type="FontAwesome" name='male' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Male</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Male</Text>
                                 <Radio style={{paddingRight: 5, paddingLeft: 8}} selected={this.state.gender === 1}
                                     onPress={(gender) => {this.setState({gender: 1})}}/>
 
                                 <Icon type="FontAwesome" name='female' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Female</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Female</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 2}
                                     onPress={(gender) => {this.setState({gender: 2})}}/>
                                 
                                 <Icon type="FontAwesome" name='transgender-alt' />
-                                <Text style={{fontFamily: "Pangolin-Regular", color: '#9e9797'}}>Both</Text>
+                                <Text style={{fontFamily: "Roboto", color: '#9e9797'}}>Both</Text>
                                 <Radio style={{paddingLeft: 8}} selected={this.state.gender === 3}
                                     onPress={(gender) => {this.setState({gender: 3})}}/>
                             </View>
@@ -340,7 +356,7 @@ export default class EditLecture extends Component {
                             style={{flexDirection: "row", backgroundColor: '#d3d3ea'}}
                             block
                         >
-                            <Text style={{fontFamily: "Pangolin-Regular", color: '#000'}}>Edit</Text>
+                            <Text style={{fontFamily: "Roboto", color: '#000'}}>Edit</Text>
                             {this.state.isLoading && (
                                 <ActivityIndicator size="small" color="#000000" />
                             )}
@@ -395,6 +411,6 @@ const styles = StyleSheet.create({
         bottom: 10
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
 });

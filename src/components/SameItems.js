@@ -6,6 +6,7 @@ import Color from '../constants/colors';
 export default class SameItems extends Component {
     render() {
         return (
+            <View style={styles.content}>
                 <View style={styles.Box}>
 
                     <Item style={styles.item}>
@@ -35,11 +36,16 @@ export default class SameItems extends Component {
                     </Item>
 
                 </View>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    content:{
+        backgroundColor: Color.background,
+        padding:7,
+    },
     Box: {
         flex:1,  
         backgroundColor: '#fff',
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
         borderRadius: 10        
     },
     txt:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     }
 
 });

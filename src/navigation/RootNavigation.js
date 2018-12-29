@@ -9,11 +9,12 @@ import AuthLoadingScreen from './loading'
 import AppStackStudent from './appNavigationStudent'
 import AppStackTeacher from './appNavigationTeacher'
 import TeacherDrawer from './DrawerNavigatorTeacher'
+import DrawerNavigator from './DrawerNavigator'
 
 const RootStack= createSwitchNavigator(
     {
         AuthLoading: AuthLoadingScreen,
-        AppStudent: AppStackStudent,
+        AppStudent: DrawerNavigator,
         AppTeacher: TeacherDrawer,
         Auth: AuthStack,
     },

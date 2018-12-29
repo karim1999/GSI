@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     right:{
         position: 'absolute',
         left: 200,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
     priceText:{
         backgroundColor:'#fff',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         paddingRight: 20,
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
     image:{
         width:20, 
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     rightCash:{
         position: 'absolute',
         left: 240,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     }
 
 });

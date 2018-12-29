@@ -35,17 +35,17 @@ class drawerContentComponents extends Component {
                 </View>
             </View>
             <View style={styles.screenContainer}>
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Home')}>
+                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('CalendarSearch')}>
                     <Image source={require('../images/home.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Home</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Register')}>
+                {/* <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Register')}>
                     <Image source={require('../images/user-icon.png')} style={{width: 25, height: 25, marginRight: 20}} />
                     <Text>Register</Text>
                     <Icon name = 'chevron-right' type = 'Feather' style={{position: 'absolute', right: 0}} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity style={styles.screenStyle} onPress={this.navigateToScreen('Reports')}>
                     <Image source={require('../images/reports.png')} style={{width: 25, height: 25, marginRight: 20}} />

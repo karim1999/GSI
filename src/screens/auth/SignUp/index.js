@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   input:{
     color: '#fff',
     textAlign: 'center',
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   button:{
     backgroundColor: '#364675',
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   buttonTxt:{
     color: '#fff',
     fontSize: 20,
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   signinButton:{
       color: '#d9cdb7'

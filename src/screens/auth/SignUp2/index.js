@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   input:{
     color: '#d9cdb7',
     textAlign: 'center',
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
   },
   button:{
     backgroundColor: '#364675',
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginRight: 50,
       color: '#d9cdb7',
-      fontFamily: "Pangolin-Regular",
+      fontFamily: "Roboto",
   },
   font:{
-    fontFamily: "Pangolin-Regular",
+    fontFamily: "Roboto",
     color: '#d9cdb7'
 },
 });

@@ -38,7 +38,7 @@ export default class Payments extends Component {
 
     render() {
         return (
-            <AppTemplate title="Payment">
+            <AppTemplate title="Payment" navigation={this.props.navigation}>
                 <View style={styles.content}>
                 {
                     (this.state.isLoading)? (
@@ -58,7 +58,7 @@ export default class Payments extends Component {
                                 <View style={styles.firstBox}></View>
 
                                 <View style={styles.secondBox}>
-                                    <H3 style={styles.font}>{item.title}</H3>
+                                    <Text style={styles.font}>{item.title}</Text>
 
                                     <Item style={styles.item}>
                                         <View style={styles.viewImage}>
@@ -66,8 +66,8 @@ export default class Payments extends Component {
                                         </View>
                                         <View>
                                         <Item style={{ backgroundColor: '#fff', borderColor: 'transparent', paddingBottom: 10 }}>
-                                            <H3 style={styles.font}>Students </H3>
-                                            <H3 style={{marginLeft: 60}}>{item.joint_users.length}</H3>
+                                            <Text style={styles.font}>Students </Text>
+                                            <Text style={{marginLeft: 60}}>{item.joint_users.length}</Text>
                                         </Item>
                                         
                                         <Item style={{ backgroundColor: '#fff', borderColor: 'transparent', paddingBottom: 10 }}>
@@ -120,14 +120,14 @@ const styles = StyleSheet.create({
         padding:7,
     },
     Box: {
-        height: 200, 
+        height: 220, 
         backgroundColor: '#fff',
         flexDirection: 'row',
         marginBottom: 30
     },
     firstBox:{
         width: 30, 
-        height: 200, 
+        height: 220, 
         backgroundColor: Color.firstColor, 
     },
     secondBox:{
@@ -138,7 +138,9 @@ const styles = StyleSheet.create({
         borderColor: 'transparent'
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Open Sans",
+        fontSize: 21,
+        color:'#000'
     },
     viewImage:{
         paddingRight: 25

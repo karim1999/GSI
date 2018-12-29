@@ -72,7 +72,11 @@ class AppTemplate extends Component {
                     <Right>
 
                     <TouchableOpacity>
-                        <Icon style={styles.butt} name='md-search' onPress={ () => this.props.navigation.navigate('Search')}/>
+                        {
+                            (this.props.user.type == 1) ?(
+                                <Icon style={styles.butt} name='md-search' onPress={ () => this.props.navigation.navigate('Search')}/>                                
+                            ):null
+                        }
                     </TouchableOpacity>
 
                     </Right>

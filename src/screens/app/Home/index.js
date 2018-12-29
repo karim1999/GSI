@@ -46,7 +46,7 @@ export default class MyHomeScreen extends Component {
                     </View>
 
                     <View style={styles.thirdBox}>
-                        <H3 style={{paddingBottom: 10, fontFamily: "Pangolin-Regular",}}>Math Lecture</H3>
+                        <H3 style={{paddingBottom: 10, fontFamily: "Roboto",}}>Math Lecture</H3>
                         <H3 style={styles.font}>Phyiscs Lecture</H3>
                     </View>
 
@@ -65,7 +65,7 @@ export default class MyHomeScreen extends Component {
                     </View>
 
                     <View style={styles.thirdBox}>
-                        <H3 style={{paddingBottom: 10, fontFamily: "Pangolin-Regular",}}>Math Lecture</H3>
+                        <H3 style={{paddingBottom: 10, fontFamily: "Roboto",}}>Math Lecture</H3>
                         <H3 style={styles.font}>Phyiscs Lecture</H3>
                     </View>
 
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
     },
     date:{
         marginLeft: 7,
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     },
     font:{
-        fontFamily: "Pangolin-Regular",
+        fontFamily: "Roboto",
     }
 
 });
