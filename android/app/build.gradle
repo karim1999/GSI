@@ -148,7 +148,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
 
   // Firebase dependencies
     implementation fileTree(dir: "libs", include: ["*.jar"])
